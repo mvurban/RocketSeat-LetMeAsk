@@ -1,8 +1,9 @@
+import { Home } from "./pages/Home";
 
 
 function App() {
   return (
-    <h1>Helow Worldddd </h1>
+    <Home></Home>
   );
 }
 
