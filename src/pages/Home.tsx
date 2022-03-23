@@ -2,12 +2,29 @@ import ilustration from '../../src/pages/assets/images/ilustration.svg'
 import logoImg from '../../src/pages/assets/images/logo.svg'
 import googleIconImg from '../../src/pages/assets/images/google_icon.svg'
 import { Button } from '../components/Button'
+import {useNavigate} from 'react-router-dom'
 
 import '../styles/auth.scss'
+import { googleLoginWithPopUp } from '../database/firebase/googleLoginWithPopUp'
 
 
 export function Home(){
-    return (
+
+   const navigate = useNavigate();
+
+   async function handlerCreateRoom(){
+
+      try{
+         const credential = await googleLoginWithPopUp();
+         //console.log(credential.user);
+      }
+      catch(error){
+         alert(error);
+      }
+      
+   }
+
+   return (
         <div id='page-auth'>
             <aside>
                 <img src={ilustration} alt="Ilustração da Home"></img>
@@ -17,7 +34,7 @@ export function Home(){
             <main>
                 <div className='main-content'>  
                     <img src={logoImg} alt="logo"></img>
-                    <button className='create_room'>
+                    <button onClick={handlerCreateRoom} className='create_room'>
                         <img src={googleIconImg} alt="Icone do Google"></img>
                         Crie sua sala com o Google
                     </button>
