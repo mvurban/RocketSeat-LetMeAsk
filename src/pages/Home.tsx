@@ -5,15 +5,23 @@ import { Button } from '../components/Button'
 import {useNavigate} from 'react-router-dom'
 
 import '../styles/auth.scss'
+import { googleLoginWithPopUp } from '../database/firebase/googleLoginWithPopUp'
 
 
 export function Home(){
 
-
    const navigate = useNavigate();
 
-   function navigationToNewRoom(){
-      navigate('room/new');
+   async function handlerCreateRoom(){
+
+      try{
+         const credential = await googleLoginWithPopUp();
+         //console.log(credential.user);
+      }
+      catch(error){
+         alert(error);
+      }
+      
    }
 
    return (
@@ -26,7 +34,7 @@ export function Home(){
             <main>
                 <div className='main-content'>  
                     <img src={logoImg} alt="logo"></img>
-                    <button onClick={navigationToNewRoom} className='create_room'>
+                    <button onClick={handlerCreateRoom} className='create_room'>
                         <img src={googleIconImg} alt="Icone do Google"></img>
                         Crie sua sala com o Google
                     </button>
