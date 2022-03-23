@@ -16,6 +16,7 @@ export function Home(){
 
       try{
          const credential = await googleLoginWithPopUp();
+         navigate("/Room/New")
          //console.log(credential.user);
       }
       catch(error){
