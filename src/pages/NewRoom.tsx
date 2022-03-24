@@ -8,6 +8,10 @@ import '../styles/auth.scss'
 
 
 export function NewRoom(){
+
+
+   
+
     return (
         <div id='page-auth'>
 

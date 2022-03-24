@@ -5,19 +5,32 @@ import { Button } from '../components/Button'
 import {useNavigate} from 'react-router-dom'
 
 import '../styles/auth.scss'
-import { googleLoginWithPopUp } from '../database/firebase/googleLoginWithPopUp'
+import { useContext } from 'react'
+import { authContext } from '../contexts/AuthContext'
 
 
 export function Home(){
 
    const navigate = useNavigate();
+   const {user, loginGoogleWithPopUp} = useContext(authContext)
 
    async function handlerCreateRoom(){
 
+      if(user)
+      {
+         //navigate("/Room/New")
+         console.log(user);
+         
+      }
+      else{
+         await loginGoogleWithPopUp();
+      }   
+
       try{
-         const credential = await googleLoginWithPopUp();
-         navigate("/Room/New")
-         //console.log(credential.user);
+
+         const credential = await loginGoogleWithPopUp();
+         
+         console.log(credential.name);
       }
       catch(error){
          alert(error);
