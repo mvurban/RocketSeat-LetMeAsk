@@ -5,32 +5,29 @@ import { Button } from '../components/Button'
 import {useNavigate} from 'react-router-dom'
 
 import '../styles/auth.scss'
-import { useContext } from 'react'
-import { authContext } from '../contexts/AuthContext'
+import { useAuth } from '../contexts/AuthContext'
 
 
 export function Home(){
 
    const navigate = useNavigate();
-   const {user, loginGoogleWithPopUp} = useContext(authContext)
+   const {user, signInGoogleWithPopUp} = useAuth() 
 
    async function handlerCreateRoom(){
 
-      if(user)
-      {
-         //navigate("/Room/New")
-         console.log(user);
-         
-      }
-      else{
-         await loginGoogleWithPopUp();
-      }   
-
       try{
-
-         const credential = await loginGoogleWithPopUp();
-         
-         console.log(credential.name);
+         if(user)
+         {
+            navigate("/Room/New")
+            //console.log(user);         
+         }
+         else{
+            const user = await signInGoogleWithPopUp();
+            if(user)
+               navigate("/Room/New")
+            //else
+               //throw Error("Não há usuario logado");
+         }   
       }
       catch(error){
          alert(error);

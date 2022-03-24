@@ -1,11 +1,13 @@
-import {createContext, ReactNode, useEffect, useState} from 'react';
+import { signOut } from '../database/firebase/signOut';
+import {createContext, ReactNode, useContext, useEffect, useState} from 'react';
 import { auth } from '../database/firebase/firebase';
-import {loginGoogleWithPopUp} from '../database/firebase/loginGoogleWithPopUp';
+import {signInGoogleWithPopUp} from '../database/firebase/signInGoogleWithPopUp';
 import {CreateUser, User} from '../domain/User'
 
 type AuthContextType = {
    user : User | undefined;
-   loginGoogleWithPopUp : () =>  Promise<User>;  
+   signInGoogleWithPopUp : () =>  Promise<User | undefined>;  
+   signOutAll : () => void;
 }
 
 type AuthContextProviderProps = {
@@ -18,26 +20,37 @@ export function AuthContextProvider(props : AuthContextProviderProps){
 
    const[user, setUser] = useState<User>();
 
-
+   //Mantém a informação na tela
    useEffect(()=>{
       const unsubscribe = auth.onAuthStateChanged(user =>  {
          if(user){
             setUser(CreateUser(user.uid, user.displayName, user.photoURL));
          }
-      })
-   
+      })   
       return () => {
          unsubscribe();
-      }
-   
+      }   
    },[])
+
+
+   function signOutAll(){      
+      setUser(undefined);
+      signOut();
+   }
 
    return(
 
-      <authContext.Provider value={{user, loginGoogleWithPopUp}}>
+      <authContext.Provider value={{user, signInGoogleWithPopUp, signOutAll}}>
          {props.children    }
       </authContext.Provider>
 
 
    );
+}
+
+export function useAuth(){
+
+   const authContextAux = useContext(authContext);
+   return authContextAux;
+
 }

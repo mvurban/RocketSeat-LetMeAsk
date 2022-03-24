@@ -5,12 +5,17 @@ import { Button } from '../components/Button'
 import {Link} from 'react-router-dom'
 
 import '../styles/auth.scss'
+import { useAuth } from '../contexts/AuthContext'
+
 
 
 export function NewRoom(){
 
+   const {user, signOutAll} = useAuth() 
 
-   
+   function Logout(){
+      signOutAll();
+   }
 
     return (
         <div id='page-auth'>
@@ -23,14 +28,20 @@ export function NewRoom(){
            
             <main>
                 <div className='main-content'>  
+
+                     <h2>{user?.name}</h2>
+
                     <img src={logoImg} alt="logo"></img>
                     <h2>Crie uma nova sala</h2>                    
                     <form>
                         <input type='text' placeholder='nome da sala'></input>
-                        <Button  type='submit'>Criar sala</Button>
+                        <Button type='submit'>Criar sala</Button>
                     </form>
                     <p>
                         Quer entrar numa sala já existente? <Link to='/'>clique aqui</Link>
+                     </p>
+                     <p>                        
+                     <Button onClick={Logout}  type='submit'>Sair</Button>
                      </p>
                 </div>
             </main> 

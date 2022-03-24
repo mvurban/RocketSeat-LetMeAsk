@@ -2,9 +2,9 @@ import { auth, provider, signInWithPopup } from './firebase'
 import { GoogleAuthProvider } from 'firebase/auth'
 import { CreateUser, User } from '../../domain/User';
 
-export async function  loginGoogleWithPopUp(): Promise<User>{
+export async function  signInGoogleWithPopUp(): Promise<User | undefined>{
    
-   let user = {} as User;
+   let user = undefined;
 
    try{
       const result = await signInWithPopup(auth, provider)
@@ -20,3 +20,4 @@ export async function  loginGoogleWithPopUp(): Promise<User>{
       return user;
    }
 }
+
