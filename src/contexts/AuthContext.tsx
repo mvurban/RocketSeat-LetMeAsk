@@ -2,11 +2,11 @@ import { signOut } from '../database/firebase/signOut';
 import {createContext, ReactNode, useContext, useEffect, useState} from 'react';
 import { auth } from '../database/firebase/firebase';
 import {signInGoogleWithPopUp} from '../database/firebase/signInGoogleWithPopUp';
-import {CreateUser, User} from '../domain/User'
+import {CreateUser, TUser} from '../domain/User'
 
 type AuthContextType = {
-   user : User | undefined;
-   signInGoogleWithPopUp : () =>  Promise<User | undefined>;  
+   user : TUser | undefined;
+   signInGoogleWithPopUp : () =>  Promise<TUser | undefined>;  
    signOutAll : () => void;
 }
 
@@ -18,7 +18,7 @@ export const authContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider(props : AuthContextProviderProps){ 
 
-   const[user, setUser] = useState<User>();
+   const[user, setUser] = useState<TUser>();
 
    //Mantém a informação na tela
    useEffect(()=>{

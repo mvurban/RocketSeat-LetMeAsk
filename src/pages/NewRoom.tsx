@@ -24,9 +24,8 @@ export function NewRoom() {
       try {
 
          if (roomName.trim() != '') {
-            if (user) {
-               const room = useRoom.objRoom(roomName, user?.id);
-               const idRoom = useRoom.addRoom(room);
+            if (user) {               
+               const idRoom = useRoom.addRoom(roomName, user?.id);
 
                Navigate("/Room/" + idRoom)
             }

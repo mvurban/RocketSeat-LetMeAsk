@@ -1,14 +1,14 @@
 
-export type User = {
+export type TUser = {
    id: string;
    name : string;
    avatar : string;
 }
 
 
-export function CreateUser(id:string, name:string | null, avatar:string | null) : User{
+export function CreateUser(id:string, name:string | null, avatar:string | null) : TUser{
 
-   let user = {} as User;
+   let user = {} as TUser;
 
    user.id = id;
    user.name = name ? name :  "N/A";

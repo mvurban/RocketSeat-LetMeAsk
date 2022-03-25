@@ -1,9 +1,9 @@
 import { Unsubscribe } from "firebase/auth";
-import { User, CreateUser } from "../../domain/User";
+import { TUser, CreateUser } from "../../domain/User";
 import { auth } from "./firebase";
 
 type stateChangedType = {
-   user : User |undefined;
+   user : TUser |undefined;
    unsubscribe : Unsubscribe;
 }
 

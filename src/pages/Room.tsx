@@ -1,37 +1,34 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Room, useRoom } from "../domain/Room";
+import { useRoom } from "../domain/Room";
 
 export function Room(){
 
-   const[roomName, setRoomName] = useState<string>('')
    const {id : idRoom} = useParams()
-
+   const[roomName, setRoomName] = useState<string>('')
 
    if(idRoom)
    {
       try {
-         getRoomName(idRoom);
-
+         setNameToRoom(idRoom);
       } 
       catch (e) {
          alert(e)
       }      
    }
    
-   async function getRoomName(idRoom : string) : Promise<Room | null> {
+   async function setNameToRoom(idRoom : string)  {
 
       let room = null;
 
       try {
-         room = useRoom.getRoom(idRoom)   
-         //setRoomName(room)      
+         room = await useRoom.getRoom(idRoom)   
+         if (room){
+            setRoomName(room?.title)      
+         }
       } catch (e) {
          alert(e)
       }
-
-      return room;
-
    }
 
 
