@@ -1,17 +1,42 @@
 import ilustration from '../../src/pages/assets/images/ilustration.svg'
 import logoImg from '../../src/pages/assets/images/logo.svg'
-import googleIconImg from '../../src/pages/assets/images/google_icon.svg'
 import { Button } from '../components/Button'
 import {Link} from 'react-router-dom'
+import { FormEvent, useContext, useState } from 'react'
 
 import '../styles/auth.scss'
 import { useAuth } from '../contexts/AuthContext'
+import { useRoom, Room } from '../domain/Room'
 
 
 
 export function NewRoom(){
 
    const {user, signOutAll} = useAuth() 
+   const [roomName, setRoomName] = useState('')
+
+   function handleCriateRoom(event : FormEvent){
+
+      //Previne o comportamento padrão do submit que carrega toda a página.
+      event.preventDefault();
+
+      if(roomName.trim() != ''){
+         if(user){
+            const room  = useRoom.objRoom(roomName, user?.id);  
+            useRoom.addRoom(room);
+         }
+      }      
+      else {
+         return;
+      }
+
+      
+
+      //const roomRef = database.ref('rooms');
+
+
+   }
+
 
    function Logout(){
       signOutAll();
@@ -28,13 +53,16 @@ export function NewRoom(){
            
             <main>
                 <div className='main-content'>  
-
-                     <h2>{user?.name}</h2>
-
                     <img src={logoImg} alt="logo"></img>
                     <h2>Crie uma nova sala</h2>                    
-                    <form>
-                        <input type='text' placeholder='nome da sala'></input>
+                    <form onSubmit={handleCriateRoom}>
+                        <input 
+                           type='text' 
+                           placeholder='nome da sala'
+                           onChange={(event)=>setRoomName(event.target.value)}
+                           value={roomName} >
+                           
+                        </input>
                         <Button type='submit'>Criar sala</Button>
                     </form>
                     <p>

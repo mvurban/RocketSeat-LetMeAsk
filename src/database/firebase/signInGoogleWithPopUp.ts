@@ -1,5 +1,5 @@
-import { auth, provider, signInWithPopup } from './firebase'
-import { GoogleAuthProvider } from 'firebase/auth'
+import { auth, provider } from './firebase'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { CreateUser, User } from '../../domain/User';
 
 export async function  signInGoogleWithPopUp(): Promise<User | undefined>{

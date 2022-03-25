@@ -11,7 +11,7 @@ function App() {
          <AuthContextProvider>
             <Routes>
                <Route path="/"  element={<Home />} ></Route> 
-               <Route path="/Room/New" element={<NewRoom/>}></Route>     
+               <Route path="/Room/New" element={<NewRoom />}></Route>     
             </Routes>
          </AuthContextProvider>
       </BrowserRouter>
