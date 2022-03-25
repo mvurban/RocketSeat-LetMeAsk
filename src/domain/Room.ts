@@ -1,5 +1,5 @@
 
-import { getDatabase, push, ref, set } from "firebase/database";
+import { child, get, getDatabase, push, ref, set } from "firebase/database";
 
 export type Room = {
    title : string;
@@ -10,14 +10,19 @@ export type Room = {
 const db = getDatabase();
 const reference = ref(db, 'Rooms')
 
-function addRoom(room : Room){
+function addRoom(room : Room) : string | null {
 
-   push(reference, {room} )
+   let idRoom = null;
 
-   // set(reference, {
-   //    title : room.title,
-   //    authorId : room.authorId
-   // })
+   try{
+      idRoom = push(reference, {room} ).key
+   }
+   catch(e){
+      throw e;
+   }   
+
+   return idRoom;
+
 }
 
 
@@ -26,11 +31,26 @@ function delRoom(){
 }
 
 function setRoom(){
-
+   // set(reference, {
+   //    title : room.title,
+   //    authorId : room.authorId
+   // })
 }
 
-function getRoom(){
+async function getRoom(idRoom : string) : Promise<Room | null>{
 
+   let room = null
+
+   try{
+      const snapshot = await get(child(reference,`Rooms/${idRoom}`))
+      //room = snapshot.val()
+      room = {title : 'teste',authorId: 'teste'} as Room
+   }
+   catch(e){
+
+   }
+
+   return room
 }
 
 function objRoom(title : string, authorId:string){
@@ -38,7 +58,7 @@ function objRoom(title : string, authorId:string){
    return {title, authorId} as Room
 }
 
-export const useRoom = {addRoom, delRoom, objRoom} ;
+export const useRoom = {addRoom, getRoom, setRoom, delRoom, objRoom} ;
 
 
 // export function useRoom(testew : string){
