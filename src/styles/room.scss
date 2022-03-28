@@ -53,12 +53,12 @@
          display: flex;
          justify-content: space-between;
          align-items: center;
-         padding-top: 16px;
+         margin-top: 16px;
 
          span{
             font-size: 14px;            
             color: #737380;
-            
+                                    
             button{
                border: 0;
                background: transparent;
@@ -66,6 +66,7 @@
                color: #6F4BD8;
                text-decoration: underline;    
                cursor: pointer;           
+               display: inline-flex;
             }
          }
       }

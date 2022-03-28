@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "../components/Button";
+import { RoomCode } from "../components/RoomCode";
 import { useRoom } from "../domain/Room";
 import '../styles/room.scss';
 import logo from './assets/images/logo.svg'
@@ -16,7 +17,7 @@ export function Room(){
          setNameToRoom(idRoom);
       } 
       catch (error) {
-         alert(error)
+         alert(error) 
       }      
    }
    
@@ -28,6 +29,12 @@ export function Room(){
          room = await useRoom.getRoom(idRoom)   
          if (room){
             setRoomName(room?.title)      
+         }
+         else{
+            throw new Error('Sala não encontrada')
+            //setRoomName('Qualquer coisa')      
+            //alert('Sala não encontrada. Vou colocar um nome qq pra vc visualizar ok.')
+            //return false; 
          }
       } catch (error) {
          alert(error)
@@ -42,12 +49,12 @@ export function Room(){
 
       <div className="page-container">
          <header>
-            <img src={logo} alt="logo"></img>
-            <span>Sala {idRoom}</span>
+            <img src={logo} alt="logo"></img>            
+            <RoomCode>{idRoom}</RoomCode>
          </header>
          <main>
             <div className="room-title">
-               <h1>{roomName}</h1>
+               <h1>{roomName}</h1> 
                <span>4 perguntas</span>
             </div>
             <form onSubmit={handleSendQuestion}>
