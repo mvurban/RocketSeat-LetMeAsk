@@ -16,7 +16,7 @@ export function NewRoom() {
    const [roomName, setRoomName] = useState('')
    const Navigate = useNavigate();
 
-   function handleCriateRoom(event: FormEvent) {
+   function handleCreateRoom(event: FormEvent) {
 
       //Previne o comportamento padrão do submit que carrega toda a página.
       event.preventDefault();
@@ -64,7 +64,7 @@ export function NewRoom() {
                <div className='main-content'>
                   <img src={logoImg} alt="logo"></img>
                   <h2>Crie uma nova sala</h2>
-                  <form onSubmit={handleCriateRoom}>
+                  <form onSubmit={handleCreateRoom}>
                      <input
                         type='text'
                         placeholder='nome da sala'
