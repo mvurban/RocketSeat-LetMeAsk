@@ -23,14 +23,14 @@ export function NewRoom() {
 
       try {
 
-         if (roomName.trim() != '') {
+         if (roomName.trim() !== '') {
             if (user) {               
                const idRoom = useRoom.addRoom(roomName, user?.id);
 
                Navigate("/Room/" + idRoom)
             }
             else
-               throw 'Usuário não logado';
+               alert("Você precisa estar logado pra criar uma sala");
          }
          else {
             return;

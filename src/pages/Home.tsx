@@ -6,14 +6,17 @@ import {useNavigate} from 'react-router-dom'
 
 import '../styles/auth.scss'
 import { useAuth } from '../contexts/AuthContext'
+import { FormEvent, useState } from 'react'
+import { useRoom } from '../domain/Room'
 
 
 export function Home(){
 
    const navigate = useNavigate();
    const {user, signInGoogleWithPopUp} = useAuth() 
+   const [idRoom, setIdRoom] = useState('')
 
-   async function handlerCreateRoom(){
+   async function handleCreateRoom(){
 
       try{
          if(user)
@@ -34,6 +37,24 @@ export function Home(){
       }
       
    }
+   
+   async function handleJoinRoom(event:FormEvent) {
+      event.preventDefault();
+      if(idRoom.trim() !== ""){
+         //Verifico se existe a sala, 
+         const room = await useRoom.getRoom(idRoom);
+         if(room){
+            navigate(`/Room/${idRoom}`)
+         }
+         else{
+            alert('Sala não existe')            
+         }
+         //Se existir redireciono pra sala.
+      }
+      else{
+         return;
+      }
+   }
 
    return (
         <div id='page-auth'>
@@ -45,13 +66,18 @@ export function Home(){
             <main>
                 <div className='main-content'>  
                     <img src={logoImg} alt="logo"></img>
-                    <button onClick={handlerCreateRoom} className='create_room'>
+                    <button onClick={handleCreateRoom} className='create_room'>
                         <img src={googleIconImg} alt="Icone do Google"></img>
                         Crie sua sala com o Google
                     </button>
                     <div className='separator'>ou entre em uma sala</div>
-                    <form>
-                        <input type='text' placeholder='Digite o texto da sala'></input>
+                    <form onSubmit={handleJoinRoom}>
+                        <input 
+                           type='text' 
+                           placeholder='Digite o texto da sala'
+                           onChange={(event)=>{setIdRoom(event.target.value)}}
+                           value={idRoom}
+                           ></input>
                         <Button  type='submit'>Entrar na sala</Button>
                     </form>
                 </div>

@@ -47,7 +47,7 @@ async function getRoom(idRoom : string) : Promise<TRoom | null>{
       if(snapshot.exists())
       {
         room = snapshot.val() as TRoom
-        console.log(room.title);
+        //console.log(room.title);
         
       }
    }
