@@ -1,6 +1,6 @@
 import { auth, provider } from './firebase'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { CreateUser, TUser } from '../../domain/User';
+import { objUser, TUser } from '../../domain/User';
 
 export async function  signInGoogleWithPopUp(): Promise<TUser | undefined>{
    
@@ -11,7 +11,7 @@ export async function  signInGoogleWithPopUp(): Promise<TUser | undefined>{
       const credencial = GoogleAuthProvider.credentialFromResult(result);
       const token = credencial?.accessToken;
    
-      user = CreateUser(result.user.uid, result.user.displayName, result.user.photoURL)
+      user = objUser(result.user.uid, result.user.displayName, result.user.photoURL)
    }
    catch(e){
       throw e

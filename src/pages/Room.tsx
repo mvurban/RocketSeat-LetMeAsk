@@ -1,7 +1,10 @@
 import { FormEvent, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Button } from "../components/Button";
 import { RoomCode } from "../components/RoomCode";
+import { useAuth } from "../contexts/AuthContext";
+import { signInGoogleWithPopUp } from "../database/firebase/signInGoogleWithPopUp";
+import { TQuestion, useQuestion } from "../domain/Question";
 import { useRoom } from "../domain/Room";
 import '../styles/room.scss';
 import logo from './assets/images/logo.svg'
@@ -10,7 +13,9 @@ export function Room(){
 
    const {id : idRoom} = useParams()
    const[roomName, setRoomName] = useState<string>('')
-
+   const[newQuestion, setNewQuestion] = useState<string>('')
+   const {user} = useAuth();
+   
    if(idRoom)
    {
       try {
@@ -42,14 +47,44 @@ export function Room(){
    }
 
    function handleSendQuestion(event:FormEvent) {
+
       event.preventDefault();
+      
+      if(newQuestion.trim() !== ''){
+         if(user){
+            if(idRoom){
+               const objQuestion = {
+                  content : newQuestion,
+                  author : user,
+                  isAnswered : false,
+                  isHightLighted : false
+               } as TQuestion
+
+               useQuestion.addQuestion(idRoom, objQuestion)
+               setNewQuestion('');
+            }
+            else{
+               throw new Error('Sala não encontrada')               
+            }
+         }
+         else{
+            throw new Error('Usuário não logado!!')            
+         }
+      }
+      else{
+         throw new Error('A pergunta não pode ser vazia!!')            
+      }
+   }
+
+   async function handleLogin() {      
+      const user = await signInGoogleWithPopUp();      
    }
 
    return(
 
       <div className="page-container">
          <header>
-            <img src={logo} alt="logo"></img>            
+            <Link to="/"><img src={logo} alt="logo"></img></Link>
             <RoomCode>{idRoom}</RoomCode>
          </header>
          <main>
@@ -60,11 +95,20 @@ export function Room(){
             <form onSubmit={handleSendQuestion}>
                <textarea
                   placeholder="O que você quer perguntar?"
+                  onChange={event => setNewQuestion(event.target.value)}
+                  value={newQuestion}
                >
                </textarea>
                <div className="form-footer">
-                  <span>Para enviar uma pergunta, <button type="submit">faça seu login.</button></span>
-                  <Button type="submit">Enviar pergunta</Button>
+                  {user ? (
+                     <div className="user-info">
+                        <img src={user.avatar} alt={user.name}></img>
+                        <span>{user.name}</span>
+                     </div>
+                  ) : (
+                     <span>Para enviar uma pergunta, <button onClick={handleLogin} >faça seu login.</button></span>      
+                  ) }                  
+                  <Button type="submit" disabled={!user}>Enviar pergunta</Button>
                </div>
             </form>
 

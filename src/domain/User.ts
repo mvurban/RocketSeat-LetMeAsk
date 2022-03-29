@@ -6,7 +6,7 @@ export type TUser = {
 }
 
 
-export function CreateUser(id:string, name:string | null, avatar:string | null) : TUser{
+export function objUser(id:string, name:string | null, avatar:string | null) : TUser{
 
    let user = {} as TUser;
 

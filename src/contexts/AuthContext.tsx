@@ -2,7 +2,7 @@ import { signOut } from '../database/firebase/signOut';
 import {createContext, ReactNode, useContext, useEffect, useState} from 'react';
 import { auth } from '../database/firebase/firebase';
 import {signInGoogleWithPopUp} from '../database/firebase/signInGoogleWithPopUp';
-import {CreateUser, TUser} from '../domain/User'
+import {objUser, TUser} from '../domain/User'
 
 type AuthContextType = {
    user : TUser | undefined;
@@ -24,7 +24,7 @@ export function AuthContextProvider(props : AuthContextProviderProps){
    useEffect(()=>{
       const unsubscribe = auth.onAuthStateChanged(user =>  {
          if(user){
-            setUser(CreateUser(user.uid, user.displayName, user.photoURL));
+            setUser(objUser(user.uid, user.displayName, user.photoURL));
          }
       })   
       return () => {

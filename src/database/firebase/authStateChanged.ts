@@ -1,5 +1,5 @@
 import { Unsubscribe } from "firebase/auth";
-import { TUser, CreateUser } from "../../domain/User";
+import { TUser, objUser } from "../../domain/User";
 import { auth } from "./firebase";
 
 type stateChangedType = {
@@ -15,7 +15,7 @@ export async function stateChanged() : Promise<stateChangedType>
 
    const unsubscribe = auth.onAuthStateChanged(user =>  {
       if(user){
-         userInit = CreateUser(user.uid, user.displayName, user.photoURL);         
+         userInit = objUser(user.uid, user.displayName, user.photoURL);         
       }
    })   
 
