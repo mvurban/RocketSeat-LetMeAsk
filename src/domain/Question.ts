@@ -1,5 +1,5 @@
 
-import { child, get, getDatabase, push, ref, set } from "firebase/database";
+import { child, get, getDatabase, orderByChild, push, query, ref, set } from "firebase/database";
 import { TUser } from "./User";
 
 export type TQuestion = {
@@ -13,12 +13,12 @@ const db = getDatabase();
 const roomsRef = ref(db, 'Rooms')
 const questionsRefName = 'Questions'
 
-function addQuestion(idroom : string, newQuestion : TQuestion) : string | null {
+function addQuestion(idRoom : string, newQuestion : TQuestion) : string | null {
 
    let idQuestion = null;
 
    try{
-      const questionRef = ref(db,roomsRef.key + "/" + idroom + "/" + questionsRefName)
+      const questionRef = ref(db,roomsRef.key + "/" + idRoom + "/" + questionsRefName)
       idQuestion = push(questionRef, newQuestion ).key
    }
    catch(e){
@@ -27,6 +27,21 @@ function addQuestion(idroom : string, newQuestion : TQuestion) : string | null {
 
    return idQuestion;
 
+}
+
+async function getAllQuestions(idRoom:string) : Promise<TQuestion[]> {
+   
+   let listQuestionOfRoom = [] as TQuestion[] 
+   const questionRef = ref(db, roomsRef.key + "/" + idRoom + "/" + questionsRefName)
+
+   const snapshot = await get(questionRef)
+   if(snapshot.exists())
+   {
+      listQuestionOfRoom = snapshot.val() as TQuestion[]
+   }
+   console.log(listQuestionOfRoom);
+   
+   return listQuestionOfRoom;
 }
 
 
@@ -43,7 +58,7 @@ function setRoom(){
 
 /*
 async function getRoom(idQuestion : string) : Promise<TQuestion | null>{
-
+/*
    let room = null
 
    try{
@@ -68,7 +83,7 @@ function objRoom(title : string, authorId:string){
    return {title, authorId} as TRoom
 }
 */
-export const useQuestion = {addQuestion} ;
+export const useQuestion = {addQuestion, getAllQuestions} ;
 
 
 

@@ -1,21 +1,26 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "../components/Button";
+import { Question } from "../components/Question";
 import { RoomCode } from "../components/RoomCode";
 import { useAuth } from "../contexts/AuthContext";
 import { signInGoogleWithPopUp } from "../database/firebase/signInGoogleWithPopUp";
 import { TQuestion, useQuestion } from "../domain/Question";
-import { useRoom } from "../domain/Room";
+import { TRoomCode, useRoom } from "../domain/Room";
 import '../styles/room.scss';
 import logo from './assets/images/logo.svg'
 
 export function Room(){
 
-   const {id : idRoom} = useParams()
+   const {idRoom} = useParams<TRoomCode>();   
    const[roomName, setRoomName] = useState<string>('')
    const[newQuestion, setNewQuestion] = useState<string>('')
+   const[Questions, setQuestions] = useState<TQuestion[]>([])
    const {user} = useAuth();
    
+   console.log(idRoom);
+   
+
    if(idRoom)
    {
       try {
@@ -25,6 +30,28 @@ export function Room(){
          alert(error) 
       }      
    }
+
+   useEffect(() => {
+      async function getQuestions() {
+         if(idRoom){
+            const qq = await useQuestion.getAllQuestions(idRoom)
+
+            //TODO
+            //Tipo do retorno das questões está vindo como objeto e não como array
+
+
+            console.log(typeof(qq));               
+            //qq.map((value, index, ar)=>{console.log("qq", value.content)})
+            //console.log("qq",qq.map((obj, index)=>{obj.content}));
+            
+            setQuestions(qq)
+         }            
+      }
+      getQuestions();
+      console.log("Questions " , Questions);
+ 
+   }   
+   ,[idRoom]);
    
    async function setNameToRoom(idRoom : string)  {
 
@@ -85,7 +112,7 @@ export function Room(){
       <div className="page-container">
          <header>
             <Link to="/"><img src={logo} alt="logo"></img></Link>
-            <RoomCode>{idRoom}</RoomCode>
+            <RoomCode idRoom={idRoom?idRoom:""}></RoomCode>
          </header>
          <main>
             <div className="room-title">
@@ -113,7 +140,17 @@ export function Room(){
             </form>
 
             <section>
-               <span>Lista de perguntas</span>
+               {
+                  // Questions ? 
+                  // (
+                  //       Questions.map(function(obj, index){
+                  //          <Question question={obj}  ></Question>
+                  //       })
+                  // ) : (
+                  //    <div></div>
+                  // )
+               }
+               
             </section>
             
 

@@ -6,6 +6,10 @@ export type TRoom = {
    authorId : string;
 }
 
+export type TRoomCode = {
+   idRoom : string;
+}
+
 const db = getDatabase();
 const roomsRef = ref(db, 'Rooms')
 
