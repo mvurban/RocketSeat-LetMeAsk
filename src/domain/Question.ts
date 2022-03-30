@@ -37,9 +37,25 @@ async function getAllQuestions(idRoom:string) : Promise<TQuestion[]> {
    const snapshot = await get(questionRef)
    if(snapshot.exists())
    {
-      listQuestionOfRoom = snapshot.val() as TQuestion[]
+
+      var objListQuestionOfRoom = snapshot.val() 
+
+      //Transformo o objeto do retornodo da busca no firebase em um array.
+      //O retorno vem assim -> objListQuestionOfRoom = {-MzKwgOJ_iCl0pOEJJnE: {…}, -MzL-DFb0am6jjVznc8s: {…}}
+      const arrayQuestios = Object.entries(objListQuestionOfRoom ?? {}) 
+
+      arrayQuestios.map(([key, value])=>{
+         listQuestionOfRoom.push(value as TQuestion)                  
+      })
+      
+      return listQuestionOfRoom;
+      
    }
-   console.log(listQuestionOfRoom);
+
+   
+
+
+   //console.log(listQuestionOfRoom);
    
    return listQuestionOfRoom;
 }

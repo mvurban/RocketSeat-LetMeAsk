@@ -1,9 +1,12 @@
 
 import { child, get, getDatabase, push, ref, set } from "firebase/database";
+import { TQuestion } from "./Question";
 
 export type TRoom = {
+   id : string
    title : string;
    authorId : string;
+   questions? : TQuestion[];
 }
 
 export type TRoomCode = {

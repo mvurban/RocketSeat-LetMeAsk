@@ -18,9 +18,6 @@ export function Room(){
    const[Questions, setQuestions] = useState<TQuestion[]>([])
    const {user} = useAuth();
    
-   console.log(idRoom);
-   
-
    if(idRoom)
    {
       try {
@@ -31,28 +28,35 @@ export function Room(){
       }      
    }
 
+   async function getQuestions() {
+      if(idRoom){
+         const arrayQuestios = await useQuestion.getAllQuestions(idRoom)
+         setQuestions(arrayQuestios);
+         //console.log(arrayQuestios);
+      }            
+   }
+
+
    useEffect(() => {
-      async function getQuestions() {
-         if(idRoom){
-            const qq = await useQuestion.getAllQuestions(idRoom)
+       
+      async function getQuestions2() {
+         await getQuestions();
+      } 
 
-            //TODO
-            //Tipo do retorno das questões está vindo como objeto e não como array
-
-
-            console.log(typeof(qq));               
-            //qq.map((value, index, ar)=>{console.log("qq", value.content)})
-            //console.log("qq",qq.map((obj, index)=>{obj.content}));
-            
-            setQuestions(qq)
-         }            
-      }
-      getQuestions();
-      console.log("Questions " , Questions);
- 
+      // async function getQuestions() {
+      //    if(idRoom){
+      //       const arrayQuestios = await useQuestion.getAllQuestions(idRoom)
+      //       setQuestions(arrayQuestios);
+      //       console.log(arrayQuestios);
+      //    }            
+      
+      getQuestions2();
+      //console.log("Questions " , Questions);
    }   
    ,[idRoom]);
    
+
+
    async function setNameToRoom(idRoom : string)  {
 
       let room = null;
@@ -89,6 +93,7 @@ export function Room(){
 
                useQuestion.addQuestion(idRoom, objQuestion)
                setNewQuestion('');
+               getQuestions();   
             }
             else{
                throw new Error('Sala não encontrada')               
@@ -117,7 +122,7 @@ export function Room(){
          <main>
             <div className="room-title">
                <h1>{roomName}</h1> 
-               <span>4 perguntas</span>
+               <span>{Questions.length} perguntas</span>
             </div>
             <form onSubmit={handleSendQuestion}>
                <textarea
@@ -139,20 +144,10 @@ export function Room(){
                </div>
             </form>
 
-            <section>
-               {
-                  // Questions ? 
-                  // (
-                  //       Questions.map(function(obj, index){
-                  //          <Question question={obj}  ></Question>
-                  //       })
-                  // ) : (
-                  //    <div></div>
-                  // )
-               }
-               
-            </section>
-            
+            <div>
+               <span>TESTE</span>
+               <Question questions={Questions}></Question>
+            </div>
 
          </main>
 
