@@ -93,6 +93,27 @@
    }
    .question-section{
       margin-top: 32px;
+           
+      .noquestions{
+         margin-top: 64px;
+         text-align: center;
+         
+         >img{
+            width: 150px;
+            height: 150px;
+            margin-bottom: 16px;
+         }
+         >h2{
+            font-size: 18px;
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+         }
+         >span{
+            font-size: 14px;
+            font-family: "Roboto", sans-serif;
+            color: #737380;
+         }
+      }
    }
 
 

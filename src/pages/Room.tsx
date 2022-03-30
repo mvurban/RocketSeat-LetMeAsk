@@ -9,6 +9,7 @@ import { TQuestion, useQuestion } from "../domain/Question";
 import { TRoomCode, useRoom } from "../domain/Room";
 import '../styles/room.scss';
 import logo from './assets/images/logo.svg'
+import noquestion from './assets/images/noquestions.svg'
 
 export function Room(){
 
@@ -137,12 +138,16 @@ export function Room(){
 
             <section className="question-section">
                {
-                  Questions ? 
+                  Questions.length > 0 ?                      
                      Questions.map((obj, index)=>{
                         return <Question key={index} question={obj}></Question>
                         })
                      :
-                        <span>Sem perguntas</span>
+                     <div className="noquestions">
+                        <img src={noquestion} alt="Sem perguntas"></img>
+                        <h2>Nenhuma pergunta por aqui...</h2>
+                        <span>Seja a primeira pessoa a fazer uma pergunta!!</span>
+                     </div>
                }
             </section>
 
