@@ -32,26 +32,17 @@ export function Room(){
       if(idRoom){
          const arrayQuestios = await useQuestion.getAllQuestions(idRoom)
          setQuestions(arrayQuestios);
-         //console.log(arrayQuestios);
+         console.log(arrayQuestios);
       }            
    }
 
 
    useEffect(() => {
-       
-      async function getQuestions2() {
+
+      async function callGetQuestions() {
          await getQuestions();
       } 
-
-      // async function getQuestions() {
-      //    if(idRoom){
-      //       const arrayQuestios = await useQuestion.getAllQuestions(idRoom)
-      //       setQuestions(arrayQuestios);
-      //       console.log(arrayQuestios);
-      //    }            
-      
-      getQuestions2();
-      //console.log("Questions " , Questions);
+      callGetQuestions();
    }   
    ,[idRoom]);
    
@@ -144,10 +135,16 @@ export function Room(){
                </div>
             </form>
 
-            <div>
-               <span>TESTE</span>
-               <Question questions={Questions}></Question>
-            </div>
+            <section className="question-section">
+               {
+                  Questions ? 
+                     Questions.map((obj, index)=>{
+                        return <Question key={index} question={obj}></Question>
+                        })
+                     :
+                        <span>Sem perguntas</span>
+               }
+            </section>
 
          </main>
 

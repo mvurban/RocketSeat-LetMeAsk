@@ -11,7 +11,7 @@ export function RoomCode(props :TRoomCode ){
 
 
    return(
-      <button onClick={handleCopyRoomCodeToClipboard}>
+      <button className='button-room-code' onClick={handleCopyRoomCodeToClipboard}>
          <img src={iconSala} alt="Icone da sala"></img>
          <span>Sala: {props.idRoom}</span>
       </button>
