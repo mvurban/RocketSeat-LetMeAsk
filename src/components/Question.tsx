@@ -5,22 +5,25 @@ type TObjQuestion = {
    question : TQuestion
 }
 
-export function Question(objQuestion : TObjQuestion){
+export function Question(props : TObjQuestion){
 
    // objQuestion.questions.map((obj, index)=>{
    //    console.log(index+1 + " - " + obj.content);      
    // });
 
-   const question = objQuestion.question;
+   const question = props.question;
 
    return(
       <div className="question-container">
-         <span>{question.content}</span>
+         <p>{question.content}</p>
 
-         <div className="question-footer">
+         <footer>
             
             <div className="question-author">
-               <img src={question.author.avatar} alt={question.author.name}></img>
+               <img 
+                  src={question.author.avatar} 
+                  referrerPolicy="no-referrer"
+                  alt={question.author.name}></img>
                <span>{question.author.name}</span>
             </div>
 
@@ -31,7 +34,9 @@ export function Question(objQuestion : TObjQuestion){
                </button>               
             </div>
 
-         </div>
+         </footer>
       </div>
+
+      
    );
 }
