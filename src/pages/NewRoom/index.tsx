@@ -1,12 +1,12 @@
-import ilustration from '../../src/pages/assets/images/ilustration.svg'
-import logoImg from '../../src/pages/assets/images/logo.svg'
-import { Button } from '../components/Button'
+import ilustration from '../assets/images/ilustration.svg'
+import logoImg from '../assets/images/logo.svg'
+import { Button } from '../../components/Button'
 import { Link, useNavigate } from 'react-router-dom'
 import { FormEvent, useState } from 'react'
 
-import '../styles/auth.scss'
-import { useAuth } from '../contexts/AuthContext'
-import { useRoom} from '../domain/Room'
+import './styles.scss'
+import { useAuth } from '../../contexts/AuthContext'
+import { useRoom} from '../../domain/Room'
 
 
 

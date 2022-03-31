@@ -1,13 +1,13 @@
-import ilustration from '../../src/pages/assets/images/ilustration.svg'
-import logoImg from '../../src/pages/assets/images/logo.svg'
-import googleIconImg from '../../src/pages/assets/images/google_icon.svg'
-import { Button } from '../components/Button'
+import ilustration from '../assets/images/ilustration.svg'
+import logoImg from '../assets/images/logo.svg'
+import googleIconImg from '../assets/images/google_icon.svg'
+import { Button } from '../../components/Button'
 import {useNavigate} from 'react-router-dom'
 
-import '../styles/auth.scss'
-import { useAuth } from '../contexts/AuthContext'
+import './styles.scss'
+import { useAuth } from '../../contexts/AuthContext'
 import { FormEvent, useState } from 'react'
-import { useRoom } from '../domain/Room'
+import { useRoom } from '../../domain/Room'
 
 
 export function Home(){

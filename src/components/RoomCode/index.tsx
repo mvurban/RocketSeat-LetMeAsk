@@ -1,7 +1,7 @@
 
-import '../styles/roomCodeComponent.scss';
-import iconSala from '../pages/assets/images/iconSala.svg'
-import { TRoomCode } from '../domain/Room';
+import './styles.scss';
+import iconSala from '../../pages/assets/images/iconSala.svg'
+import { TRoomCode } from '../../domain/Room';
 
 export function RoomCode(props :TRoomCode ){
 

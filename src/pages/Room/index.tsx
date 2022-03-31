@@ -1,15 +1,15 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Button } from "../components/Button";
-import { Question } from "../components/Question";
-import { RoomCode } from "../components/RoomCode";
-import { useAuth } from "../contexts/AuthContext";
-import { signInGoogleWithPopUp } from "../database/firebase/signInGoogleWithPopUp";
-import { TQuestion, useQuestion } from "../domain/Question";
-import { TRoomCode, useRoom } from "../domain/Room";
-import '../styles/room.scss';
-import logo from './assets/images/logo.svg'
-import noquestion from './assets/images/noquestions.svg'
+import { Button } from "../../components/Button";
+import { Question } from "../../components/Question";
+import { RoomCode } from "../../components/RoomCode";
+import { useAuth } from "../../contexts/AuthContext";
+import { signInGoogleWithPopUp } from "../../database/firebase/signInGoogleWithPopUp";
+import { TQuestion, useQuestion } from "../../domain/Question";
+import { TRoomCode, useRoom } from "../../domain/Room";
+import './styles.scss';
+import logo from '../assets/images/logo.svg'
+import noquestion from '../assets/images/noquestions.svg'
 
 export function Room(){
 

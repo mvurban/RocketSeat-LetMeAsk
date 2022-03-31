@@ -1,5 +1,5 @@
-import { TQuestion } from "../domain/Question";
-import "../styles/questionComponent.scss";
+import { TQuestion } from "../../domain/Question";
+import "./styles.scss";
 
 type TObjQuestion = {
    question : TQuestion
