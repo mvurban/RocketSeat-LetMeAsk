@@ -3,6 +3,7 @@ import { child, get, getDatabase, orderByChild, push, query, ref, set } from "fi
 import { TUser } from "./User";
 
 export type TQuestion = {
+   id : string;
    content: string;
    author: TUser;
    isHightLighted : boolean;

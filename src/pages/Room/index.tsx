@@ -33,13 +33,11 @@ export function Room(){
       if(idRoom){
          const arrayQuestios = await useQuestion.getAllQuestions(idRoom)
          setQuestions(arrayQuestios);
-         console.log(arrayQuestios);
+         //console.log(arrayQuestios);
       }            
    }
 
-
    useEffect(() => {
-
       async function callGetQuestions() {
          await getQuestions();
       } 
@@ -101,7 +99,7 @@ export function Room(){
    }
 
    async function handleLogin() {      
-      const user = await signInGoogleWithPopUp();      
+      await signInGoogleWithPopUp();      
    }
 
    return(
@@ -138,23 +136,20 @@ export function Room(){
 
             <section className="question-section">
                {
-                  Questions.length > 0 ?                      
-                     Questions.map((obj, index)=>{
-                        return <Question key={index} question={obj}></Question>
-                        })
-                     :
-                     <div className="noquestions">
-                        <img src={noquestion} alt="Sem perguntas"></img>
-                        <h2>Nenhuma pergunta por aqui...</h2>
-                        <span>Seja a primeira pessoa a fazer uma pergunta!!</span>
-                     </div>
+               Questions.length > 0 ?                      
+                  Questions.map((obj, index)=>{
+                     return <Question key={obj.id} question={obj}></Question>
+                     })
+                  :
+                  <div className="noquestions">
+                     <img src={noquestion} alt="Sem perguntas"></img>
+                     <h2>Nenhuma pergunta por aqui...</h2>
+                     <span>Seja a primeira pessoa a fazer uma pergunta!!</span>
+                  </div>
                }
             </section>
 
          </main>
-
       </div>
-
-
    );
 }
