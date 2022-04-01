@@ -29,22 +29,16 @@ export function Room(){
       }      
    }
 
-   async function getQuestions() {
-      if(idRoom){
-         const arrayQuestios = await useQuestion.getAllQuestions(idRoom)
-         setQuestions(arrayQuestios);
-         //console.log(arrayQuestios);
-      }            
-   }
-
    useEffect(() => {
-      async function callGetQuestions() {
-         await getQuestions();
-      } 
-      callGetQuestions();
-   }   
+      async function getQuestions() {
+         if(idRoom){
+            const arrayQuestios = await useQuestion.getAllQuestions(idRoom)
+            setQuestions(arrayQuestios);         
+         }            
+      }      
+      getQuestions();
+   }    
    ,[idRoom]);
-   
 
 
    async function setNameToRoom(idRoom : string)  {
@@ -58,9 +52,6 @@ export function Room(){
          }
          else{
             throw new Error('Sala não encontrada')
-            //setRoomName('Qualquer coisa')      
-            //alert('Sala não encontrada. Vou colocar um nome qq pra vc visualizar ok.')
-            //return false; 
          }
       } catch (error) {
          alert(error)
@@ -83,7 +74,9 @@ export function Room(){
 
                useQuestion.addQuestion(idRoom, objQuestion)
                setNewQuestion('');
-               getQuestions();   
+               const newArrayQuestions = [...Questions, objQuestion]
+               setQuestions(newArrayQuestions)
+               //getQuestions();   
             }
             else{
                throw new Error('Sala não encontrada')               
