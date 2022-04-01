@@ -1,62 +1,23 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Question } from "../../components/Question";
 import { RoomCode } from "../../components/RoomCode";
-import { useAuth } from "../../contexts/AuthContext";
-import { signInGoogleWithPopUp } from "../../database/firebase/signInGoogleWithPopUp";
+import { useAuth } from "../../hooks/useAuth";
 import { TQuestion, useQuestion } from "../../domain/Question";
-import { TRoomCode, useRoom } from "../../domain/Room";
+import { TRoomCode } from "../../domain/Room";
 import './styles.scss';
 import logo from '../assets/images/logo.svg'
 import noquestion from '../assets/images/noquestions.svg'
+import {useGetRoom} from '../../hooks/useGetRoom'
 
 export function Room(){
 
-   const {idRoom} = useParams<TRoomCode>();   
-   const[roomName, setRoomName] = useState<string>('')
+   const {idRoom} = useParams<TRoomCode>();      
    const[newQuestion, setNewQuestion] = useState<string>('')
-   const[Questions, setQuestions] = useState<TQuestion[]>([])
-   const {user} = useAuth();
-   
-   if(idRoom)
-   {
-      try {
-         setNameToRoom(idRoom);
-      } 
-      catch (error) {
-         alert(error) 
-      }      
-   }
+   const {user, signInGoogleWithPopUp} = useAuth();
+   const{ title,  questions, setQuestions } = useGetRoom(idRoom || "") ;
 
-   useEffect(() => {
-      async function getQuestions() {
-         if(idRoom){
-            const arrayQuestios = await useQuestion.getAllQuestions(idRoom)
-            setQuestions(arrayQuestios);         
-         }            
-      }      
-      getQuestions();
-   }    
-   ,[idRoom]);
-
-
-   async function setNameToRoom(idRoom : string)  {
-
-      let room = null;
-
-      try {
-         room = await useRoom.getRoom(idRoom)   
-         if (room){
-            setRoomName(room?.title)      
-         }
-         else{
-            throw new Error('Sala não encontrada')
-         }
-      } catch (error) {
-         alert(error)
-      }
-   }
 
    function handleSendQuestion(event:FormEvent) {
 
@@ -74,9 +35,8 @@ export function Room(){
 
                useQuestion.addQuestion(idRoom, objQuestion)
                setNewQuestion('');
-               const newArrayQuestions = [...Questions, objQuestion]
-               setQuestions(newArrayQuestions)
-               //getQuestions();   
+               const newArrayQuestions = [...questions, objQuestion]
+               setQuestions(newArrayQuestions)               
             }
             else{
                throw new Error('Sala não encontrada')               
@@ -91,7 +51,7 @@ export function Room(){
       }
    }
 
-   async function handleLogin() {      
+   async function handleLogin() {            
       await signInGoogleWithPopUp();      
    }
 
@@ -104,8 +64,8 @@ export function Room(){
          </header>
          <main>
             <div className="room-title">
-               <h1>{roomName}</h1> 
-               <span>{Questions.length} perguntas</span>
+               <h1>{title}</h1> 
+               <span>{questions.length} perguntas</span>
             </div>
             <form onSubmit={handleSendQuestion}>
                <textarea
@@ -129,8 +89,8 @@ export function Room(){
 
             <section className="question-section">
                {
-               Questions.length > 0 ?                      
-                  Questions.map((obj, index)=>{
+               questions.length > 0 ?                      
+                  questions.map((obj, index)=>{
                      return <Question key={obj.id} question={obj}></Question>
                      })
                   :

@@ -1,5 +1,5 @@
 import { signOut } from '../database/firebase/signOut';
-import {createContext, ReactNode, useContext, useEffect, useState} from 'react';
+import {createContext, ReactNode, useEffect, useState} from 'react';
 import { auth } from '../database/firebase/firebase';
 import {signInGoogleWithPopUp} from '../database/firebase/signInGoogleWithPopUp';
 import {objUser, TUser} from '../domain/User'
@@ -48,9 +48,3 @@ export function AuthContextProvider(props : AuthContextProviderProps){
    );
 }
 
-export function useAuth(){
-
-   const authContextAux = useContext(authContext);
-   return authContextAux;
-
-}

@@ -5,7 +5,7 @@ import { Button } from '../../components/Button'
 import {useNavigate} from 'react-router-dom'
 
 import './styles.scss'
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth } from '../../hooks/useAuth'
 import { FormEvent, useState } from 'react'
 import { useRoom } from '../../domain/Room'
 

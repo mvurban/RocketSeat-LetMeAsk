@@ -5,10 +5,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FormEvent, useState } from 'react'
 
 import './styles.scss'
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth } from '../../hooks/useAuth'
 import { useRoom} from '../../domain/Room'
-
-
 
 export function NewRoom() {
 
