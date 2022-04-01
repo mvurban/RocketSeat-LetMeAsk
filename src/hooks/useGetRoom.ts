@@ -18,9 +18,9 @@ export function useGetRoom(idRoom : string) {
    }
 
    useEffect(() => {
-      async function getQuestions() {
+      async function getQuestions() {         
          if(idRoom){
-            const arrayQuestios = await useQuestion.getAllQuestions(idRoom)
+            const arrayQuestios = await useQuestion.onQuestionsOfRoom(idRoom)            
             setQuestions(arrayQuestios);         
          }            
       }      

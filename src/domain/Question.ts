@@ -1,5 +1,5 @@
 
-import { child, get, getDatabase, orderByChild, push, query, ref, set } from "firebase/database";
+import { child, get, getDatabase, onValue, orderByChild, push, query, ref, set } from "firebase/database";
 import { TUser } from "./User";
 
 export type TQuestion = {
@@ -30,7 +30,43 @@ function addQuestion(idRoom : string, newQuestion : TQuestion) : string | null {
 
 }
 
-async function getAllQuestions(idRoom:string) : Promise<TQuestion[]> {
+async function onQuestionsOfRoom(idRoom:string) : Promise<TQuestion[]> {
+   
+   const listQuestionOfRoom = [] as TQuestion[] 
+   const roomRef = ref(db, roomsRef.key + "/" + idRoom )
+
+   onValue(roomRef,(snapshot) => {
+      
+      const objRoom = snapshot.val() 
+      const objListQuestionOfRoom = objRoom.Questions
+      console.log("objListQuestionOfRoom", objListQuestionOfRoom);
+
+      //TODO Ver como resolvo esse problema, não quero ficar zerando essa variável.
+      // Entender melhor o listener do firebase
+      if(listQuestionOfRoom.length>0)
+         listQuestionOfRoom.length = 0;
+
+      if(objListQuestionOfRoom){
+         const arrayQuestios = Object.entries(objListQuestionOfRoom ?? {}) 
+
+         //console.log("arrayQuestios",arrayQuestios);
+
+         arrayQuestios.map(([key, value])=>{           
+            const objQuestion = value as TQuestion;
+            objQuestion.id = key;
+            listQuestionOfRoom.push(objQuestion)                  
+         })
+      }
+   })
+
+   console.log("listQuestionOfRoom",listQuestionOfRoom);
+   
+   return listQuestionOfRoom;
+}
+
+
+
+async function getQuestionsOfRoom(idRoom:string) : Promise<TQuestion[]> {
    
    let listQuestionOfRoom = [] as TQuestion[] 
    const questionRef = ref(db, roomsRef.key + "/" + idRoom + "/" + questionsRefName)
@@ -62,11 +98,11 @@ async function getAllQuestions(idRoom:string) : Promise<TQuestion[]> {
 }
 
 
-function delRoom(){
+function delQuestion(){
 
 }
 
-function setRoom(){
+function setQuestion(){
    // set(reference, {
    //    title : room.title,
    //    authorId : room.authorId
@@ -100,7 +136,7 @@ function objRoom(title : string, authorId:string){
    return {title, authorId} as TRoom
 }
 */
-export const useQuestion = {addQuestion, getAllQuestions} ;
+export const useQuestion = {addQuestion, getQuestionsOfRoom, onQuestionsOfRoom} ;
 
 
 

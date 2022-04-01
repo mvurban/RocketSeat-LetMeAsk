@@ -13,6 +13,8 @@ export function Question(props : TObjQuestion){
 
    const question = props.question;
 
+   //console.log("question",question);   
+
    return(
       <div className="question-container">
          <p>{question.content}</p>
@@ -23,7 +25,7 @@ export function Question(props : TObjQuestion){
                <img 
                   src={question.author.avatar} 
                   referrerPolicy="no-referrer"
-                  alt={question.author.name}></img>
+                  alt={question.author.name}></img> 
                <span>{question.author.name}</span>
             </div>
 

@@ -18,7 +18,6 @@ export function Room(){
    const {user, signInGoogleWithPopUp} = useAuth();
    const{ title,  questions, setQuestions } = useGetRoom(idRoom || "") ;
 
-
    function handleSendQuestion(event:FormEvent) {
 
       event.preventDefault();
@@ -35,8 +34,8 @@ export function Room(){
 
                useQuestion.addQuestion(idRoom, objQuestion)
                setNewQuestion('');
-               const newArrayQuestions = [...questions, objQuestion]
-               setQuestions(newArrayQuestions)               
+               //const newArrayQuestions = [...questions, objQuestion]
+               //setQuestions(newArrayQuestions)               
             }
             else{
                throw new Error('Sala não encontrada')               
@@ -77,7 +76,7 @@ export function Room(){
                <div className="form-footer">
                   {user ? (
                      <div className="user-info">
-                        <img src={user.avatar} alt={user.name}></img>
+                        <img src={user.avatar} referrerPolicy="no-referrer" alt={user.name}></img>
                         <span>{user.name}</span>
                      </div>
                   ) : (
