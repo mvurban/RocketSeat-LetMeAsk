@@ -6,7 +6,7 @@ import { RoomCode } from "../../components/RoomCode";
 import { useAuth } from "../../hooks/useAuth";
 import { TQuestion, useQuestion } from "../../domain/Question";
 import { TRoomCode } from "../../domain/Room";
-import '../../../src/pages/Room/styles.scss';
+import './styles.scss';
 import logo from '../assets/images/logo.svg'
 import noquestion from '../assets/images/noquestions.svg'
 import {useGetRoom} from '../../hooks/useGetRoom'
