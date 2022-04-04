@@ -18,7 +18,7 @@ export function AdminRoom(){
 
    return(
 
-      <div className="page-container">
+      <div className="adminroom-container">
          <header>
             <Link to="/"><img src={logo} alt="logo"></img></Link>
             <div>

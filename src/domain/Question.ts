@@ -41,8 +41,6 @@ async function onQuestionsOfRoom(idRoom:string) : Promise<TQuestion[]> {
       const objListQuestionOfRoom = objRoom.Questions
       console.log("objListQuestionOfRoom", objListQuestionOfRoom);
 
-      //TODO Ver como resolvo esse problema, não quero ficar zerando essa variável.
-      // Entender melhor o listener do firebase
       if(listQuestionOfRoom.length>0)
          listQuestionOfRoom.length = 0;
 

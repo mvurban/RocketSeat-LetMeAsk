@@ -54,7 +54,7 @@ export function Room(){
 
    return(
 
-      <div className="page-container">
+      <div className="room-page-container">
          <header>
             <Link to="/"><img src={logo} alt="logo"></img></Link>
             <RoomCode idRoom={idRoom?idRoom:""}></RoomCode>
