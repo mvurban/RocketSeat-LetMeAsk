@@ -4,7 +4,6 @@ import { Button } from "../../components/Button";
 import { Question } from "../../components/Question";
 import { RoomCode } from "../../components/RoomCode";
 import { useAuth } from "../../hooks/useAuth";
-import { TQuestion, useQuestion } from "../../domain/Question";
 import { TRoomCode } from "../../domain/Room";
 import './styles.scss';
 import logo from '../assets/images/logo.svg'
@@ -14,8 +13,6 @@ import {useGetRoom} from '../../hooks/useGetRoom'
 export function AdminRoom(){
 
    const {idRoom} = useParams<TRoomCode>();      
-   const[newQuestion, setNewQuestion] = useState<string>('')
-   const {user, signInGoogleWithPopUp} = useAuth();
    const{ title,  questions, setQuestions } = useGetRoom(idRoom || "") ;
 
 

@@ -6,6 +6,12 @@
    border-radius: 8px;
    box-shadow: 0 2px 12px rgb(0, 0, 0, 0.06);
 
+   span{
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      color: #737380;
+   }
+
    >p{
       font-family: "Roboto", sans-serif;
       font-size: 16px;
@@ -28,17 +34,30 @@
             border-radius: 50%;
             margin-right: 8px;
          }
-   
-         >span{
-            font-family: "Roboto", sans-serif;
-            font-size: 14px;
-            color: #737380;
-         }
-   
       }
-      .question-like{
-         
+      .question-cmds{
+
+         .like-button{         
+            border: 0;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
    
+            >span{
+               padding: 10px 5px 0;
+            }
+            
+            .liked{
+               color:#6F4BD8 ;
+   
+               svg path {
+                  stroke: #6F4BD8;
+               }
+            }
+            
+         }
+
       }
    
       

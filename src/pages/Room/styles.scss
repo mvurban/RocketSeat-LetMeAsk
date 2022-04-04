@@ -55,7 +55,6 @@
          align-items: center;
          margin-top: 16px;
 
-
          .user-info{
 
             display: flex;
@@ -68,7 +67,8 @@
                margin-right: 8px;   
             }
             >span{
-               font-family: 'Roboto', sans-serif;
+               border: 1px;
+               font-family: 'Poppins', sans-serif;
                font-size: 14px;
                font-weight: 500;
                color: #29292E;
@@ -93,7 +93,7 @@
    }
    .question-section{
       margin-top: 32px;
-           
+          
       .noquestions{
          margin-top: 64px;
          text-align: center;

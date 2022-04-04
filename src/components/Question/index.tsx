@@ -1,8 +1,10 @@
 import { TQuestion } from "../../domain/Question";
+import { Children, ReactNode } from "react";
 import "./styles.scss";
 
 type TObjQuestion = {
-   question : TQuestion
+   question : TQuestion;
+   children? : ReactNode;
 }
 
 export function Question(props : TObjQuestion){
@@ -29,11 +31,8 @@ export function Question(props : TObjQuestion){
                <span>{question.author.name}</span>
             </div>
 
-            <div className="question-like">
-               <span>6</span>
-               <button>
-                  <img></img>
-               </button>               
+            <div className="question-cmds">
+               {props.children}          
             </div>
 
          </footer>

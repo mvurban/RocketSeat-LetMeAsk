@@ -5,7 +5,7 @@ import { TQuestion } from "./Question";
 export type TRoom = {
    id : string
    title : string;
-   authorId : string;
+   authorId : string;   
    questions? : TQuestion[];
 }
 
