@@ -16,7 +16,7 @@ export function Room(){
    const {idRoom} = useParams<TRoomCode>();      
    const[newQuestion, setNewQuestion] = useState<string>('')
    const {user, signInGoogleWithPopUp} = useAuth();
-   const{ title,  questions, setQuestions } = useGetRoom(idRoom || "") ;
+      const{ title,  questions, setQuestions } = useGetRoom(idRoom || "") ;
 
    function handleSendQuestion(event:FormEvent) {
 
@@ -33,9 +33,7 @@ export function Room(){
                } as TQuestion
 
                useQuestion.addQuestion(idRoom, objQuestion)
-               setNewQuestion('');
-               //const newArrayQuestions = [...questions, objQuestion]
-               //setQuestions(newArrayQuestions)               
+               setNewQuestion('');                      
             }
             else{
                throw new Error('Sala não encontrada')               
