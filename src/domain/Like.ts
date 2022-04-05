@@ -1,5 +1,5 @@
 
-import { child, get, getDatabase, push, ref, set } from "firebase/database";
+import { child, get, getDatabase, push, ref, remove, set } from "firebase/database";
 
 import { stringify } from "querystring";
 import { TQuestion } from "./Question";
@@ -29,13 +29,18 @@ function addLike(roomId:string, questionId: string, authorId : string) : string 
 }
 
 
-function delLike(){
-
+function delLike(roomId:string, questionId: string, likeId : string){
+   try {      
+      const likeRef = ref(db, `${roomsRef.key}/${roomId}/Questions/${questionId}/Likes/${likeId}`)
+      remove(likeRef)
+   } catch (error) {
+      
+   }
 }
 
 async function getLikeOfQuestionAndUser(roomId:string, questionId : string, authorId : string ) : Promise<TLike | undefined> {
 
-   let objLike = {} as TLike | undefined;
+   let objLike = undefined as TLike | undefined;
    const likesRef = ref(db, `Rooms/${roomId}/Questions/${questionId}/Likes` )
    
    const snapshot = await get(likesRef)
@@ -49,9 +54,6 @@ async function getLikeOfQuestionAndUser(roomId:string, questionId : string, auth
       {
          objLike = {id : arrayLikeFound[0], authorId : arrayLikeFound[1].authorId}
       }      
-
-       //console.log(objLike);
-       
    }
 
    return objLike;
@@ -90,7 +92,7 @@ function setLike(){
 //    return {title, authorId} as TLike
 // }
 
-export const useLike = {addLike, getLikeOfQuestionAndUser} ;
+export const useLike = {addLike, delLike, getLikeOfQuestionAndUser} ;
 
 
 

@@ -53,12 +53,12 @@ export function Room(){
 
       if(idRoom && user)
       {
-         const objLike = await useLike.getLikeOfQuestionAndUser(idRoom, idQuestion, user.id,);
+         const objLike = await useLike.getLikeOfQuestionAndUser(idRoom, idQuestion, user.id);
 
          if(!objLike)
             useLike.addLike(idRoom, idQuestion, user.id)
-      // else
-      //    like.del()
+         else
+            useLike.delLike(idRoom, idQuestion, objLike.id)
       }
       //Se o user ainda não deu like na questão
          //inclui o like
