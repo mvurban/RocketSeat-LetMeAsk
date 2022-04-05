@@ -9,7 +9,6 @@ export type TLike = {
    authorId : string;
 }
 
-
 const db = getDatabase();
 const roomsRef = ref(db, 'Rooms')
 
@@ -18,17 +17,15 @@ function addLike(roomId:string, questionId: string, authorId : string) : string 
 
    let idLike = null;
 
-   try{
-      const likeref = `${roomsRef.key}/${roomId}/Questions/${questionId}/Likes`;
+   try{      
       const likesRef = ref(db, `${roomsRef.key}/${roomId}/Questions/${questionId}/Likes`)
-      idLike = push(likesRef, {authorId} ).key
+      idLike = push(likesRef, {authorId } ).key
    }
    catch(e){
       throw e;
    }   
 
    return idLike;
-
 }
 
 
@@ -38,19 +35,28 @@ function delLike(){
 
 async function getLikeOfQuestionAndUser(roomId:string, questionId : string, authorId : string ) : Promise<TLike | undefined> {
 
-   let objLike = undefined;
-   const likesRef = ref(db, `Rooms/ ${roomId} /Questions/ ${questionId} /Likes` )
+   let objLike = {} as TLike | undefined;
+   const likesRef = ref(db, `Rooms/${roomId}/Questions/${questionId}/Likes` )
    
-   const snapshot = await get(child(likesRef, `authorId/${authorId}` ))
+   const snapshot = await get(likesRef)
    if(snapshot.exists())
    {
-      console.log("snapshot",snapshot);
+      const objLikes = snapshot.val() as TLike[] | undefined;
+      const arrayLikes = Object.entries(objLikes ? objLikes : [])
       
+      const arrayLikeFound = arrayLikes.find(([key, value]) => value.authorId === authorId)
+      if(arrayLikeFound)
+      {
+         objLike = {id : arrayLikeFound[0], authorId : arrayLikeFound[1].authorId}
+      }      
+
+       //console.log(objLike);
+       
    }
 
    return objLike;
-
 }
+
 function setLike(){
    // set(reference, {
    //    title : Like.title,

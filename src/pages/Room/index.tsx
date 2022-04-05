@@ -53,7 +53,7 @@ export function Room(){
 
       if(idRoom && user)
       {
-         const objLike = await useLike.getLikeOfQuestionAndUser(idRoom, user.id, idQuestion);
+         const objLike = await useLike.getLikeOfQuestionAndUser(idRoom, idQuestion, user.id,);
 
          if(!objLike)
             useLike.addLike(idRoom, idQuestion, user.id)

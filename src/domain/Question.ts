@@ -39,7 +39,7 @@ async function onQuestionsOfRoom(idRoom:string) : Promise<TQuestion[]> {
       
       const objRoom = snapshot.val() 
       const objListQuestionOfRoom = objRoom.Questions
-      console.log("objListQuestionOfRoom", objListQuestionOfRoom);
+      //console.log("objListQuestionOfRoom", objListQuestionOfRoom);
 
       if(listQuestionOfRoom.length>0)
          listQuestionOfRoom.length = 0;
@@ -57,7 +57,7 @@ async function onQuestionsOfRoom(idRoom:string) : Promise<TQuestion[]> {
       }
    })
 
-   console.log("listQuestionOfRoom",listQuestionOfRoom);
+   //console.log("listQuestionOfRoom",listQuestionOfRoom);
    
    return listQuestionOfRoom;
 }
