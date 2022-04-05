@@ -17,7 +17,7 @@ const questionsRefName = 'Questions'
 function addQuestion(idRoom : string, newQuestion : TQuestion) : string | null {
 
    let idQuestion = null;
-
+   
    try{
       const questionRef = ref(db,roomsRef.key + "/" + idRoom + "/" + questionsRefName)
       idQuestion = push(questionRef, newQuestion ).key
