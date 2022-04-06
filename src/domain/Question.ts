@@ -1,7 +1,9 @@
 
+import { Unsubscribe } from "firebase/auth";
 import { DataSnapshot, get, getDatabase, off, onValue, push, ref } from "firebase/database";
-import { useAuth } from "../hooks/useAuth";
+import { Dispatch } from "react";
 import { TLike } from "./Like";
+import { roomName } from "./ObjectNames";
 import { TUser } from "./User";
 
 export type TQuestion = {
@@ -11,7 +13,7 @@ export type TQuestion = {
    isHightLighted : boolean;
    isAnswered:boolean;
    likes?:  TLike[]; 
-   isLikedByCurrentUser?:boolean;
+   likeByCurrentUser:TLike | undefined;
 }
 
 //TODO Substituir os nomes dos objetos do firebase para nome de variávesis 
@@ -61,7 +63,7 @@ function onQuestionsOfRoom (snapshot:DataSnapshot, userId : string) : TQuestion[
 
             if(objLike.authorId == userId)
             {
-               objQuestion.isLikedByCurrentUser = true
+               objQuestion.likeByCurrentUser = objLike
             }
 
          })
@@ -76,6 +78,54 @@ function onQuestionsOfRoom (snapshot:DataSnapshot, userId : string) : TQuestion[
    return questions;
 }
 
+function onQuestionsOfRoomTeste (roomId:string, userId : string, setQuestions : Dispatch<TQuestion[]>) : Unsubscribe
+ {
+   
+   const questions = [] as TQuestion[]        
+   const roomRef = ref(db, `${roomName}/${roomId}` )
+
+   const unsub = onValue(roomRef,(snapshot) => {
+      
+      const objRoom = snapshot.val() 
+      const objQuestions = objRoom.Questions
+
+      if(objQuestions){
+         const arrayQuestios = Object.entries(objQuestions ?? {}) 
+
+         arrayQuestios.map(([key, value])=>{       
+                  
+            const objQuestion = value as TQuestion; 
+            objQuestion.id = key;                  
+                        
+            const arrayLikes = Object.entries(objQuestion.likes ?? {}) 
+            const likes = [] as TLike[] 
+            arrayLikes.map(([key2, value2])=>{               
+               const objLike = value2 as TLike ;
+               objLike.id = key2;             
+               likes.push(objLike);
+
+               if(objLike.authorId == userId)
+               {
+                  objQuestion.likeByCurrentUser = objLike
+               }
+
+            })
+            objQuestion.likes = likes;            
+            
+            questions.push(objQuestion)
+         })
+      }    
+
+      setQuestions(questions);
+      
+   })  
+
+   return unsub;
+
+   //console.log("listQuestionOfRoom",questions);
+   
+   //return questions;
+}
 
 async function getQuestionsOfRoom(idRoom:string) : Promise<TQuestion[]> {
    

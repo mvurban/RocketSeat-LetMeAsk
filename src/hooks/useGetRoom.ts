@@ -29,11 +29,17 @@ export function useGetRoom(idRoom : string) {
 
          const roomRef = ref(db, `${roomName}/${idRoom}` )
    
-         onValue(roomRef,(snapshot) => {
+         const unsub = onValue(roomRef,(snapshot) => {
             const arrayQuestios = useQuestion.onQuestionsOfRoom(snapshot, user.id)
             setQuestions(arrayQuestios);         
          })
+
+         return ()=>{
+            unsub();
+         }   
       }}
+
+      
    ,[idRoom, user]);
 
 
