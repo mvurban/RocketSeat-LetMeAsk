@@ -1,8 +1,6 @@
 
-import { child, get, getDatabase, push, ref, remove, set } from "firebase/database";
-
-import { stringify } from "querystring";
-import { TQuestion } from "./Question";
+import { get, getDatabase, push, ref, remove} from "firebase/database";
+import { roomName, questionName, likeName } from "./ObjectNames";
 
 export type TLike = {
    id : string;
@@ -10,7 +8,7 @@ export type TLike = {
 }
 
 const db = getDatabase();
-const roomsRef = ref(db, 'Rooms')
+const roomsRef = ref(db, roomName)
 
 
 function addLike(roomId:string, questionId: string, authorId : string) : string | null {
@@ -18,7 +16,7 @@ function addLike(roomId:string, questionId: string, authorId : string) : string 
    let idLike = null;
 
    try{      
-      const likesRef = ref(db, `${roomsRef.key}/${roomId}/Questions/${questionId}/Likes`)
+      const likesRef = ref(db, `${roomsRef.key}/${roomId}/${questionName}/${questionId}/${likeName}`)
       idLike = push(likesRef, {authorId } ).key
    }
    catch(e){
@@ -31,7 +29,7 @@ function addLike(roomId:string, questionId: string, authorId : string) : string 
 
 function delLike(roomId:string, questionId: string, likeId : string){
    try {      
-      const likeRef = ref(db, `${roomsRef.key}/${roomId}/Questions/${questionId}/Likes/${likeId}`)
+      const likeRef = ref(db, `${roomsRef.key}/${roomId}/${questionName}/${questionId}/${likeName}/${likeId}`)
       remove(likeRef)
    } catch (error) {
       
@@ -41,7 +39,7 @@ function delLike(roomId:string, questionId: string, likeId : string){
 async function getLikeOfQuestionAndUser(roomId:string, questionId : string, authorId : string ) : Promise<TLike | undefined> {
 
    let objLike = undefined as TLike | undefined;
-   const likesRef = ref(db, `Rooms/${roomId}/Questions/${questionId}/Likes` )
+   const likesRef = ref(db, `${roomName}/${roomId}/${questionName}/${questionId}/${likeName}` )
    
    const snapshot = await get(likesRef)
    if(snapshot.exists())

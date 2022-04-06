@@ -1,5 +1,7 @@
 
-import { child, get, getDatabase, onValue, orderByChild, push, query, ref, set } from "firebase/database";
+import { DataSnapshot, get, getDatabase, off, onValue, push, ref } from "firebase/database";
+import { useAuth } from "../hooks/useAuth";
+import { TLike } from "./Like";
 import { TUser } from "./User";
 
 export type TQuestion = {
@@ -8,7 +10,11 @@ export type TQuestion = {
    author: TUser;
    isHightLighted : boolean;
    isAnswered:boolean;
+   likes?:  TLike[]; 
+   isLikedByCurrentUser?:boolean;
 }
+
+//TODO Substituir os nomes dos objetos do firebase para nome de variávesis 
 
 const db = getDatabase();
 const roomsRef = ref(db, 'Rooms')
@@ -30,38 +36,45 @@ function addQuestion(idRoom : string, newQuestion : TQuestion) : string | null {
 
 }
 
-async function onQuestionsOfRoom(idRoom:string) : Promise<TQuestion[]> {
+function onQuestionsOfRoom (snapshot:DataSnapshot, userId : string) : TQuestion[] {
    
-   const listQuestionOfRoom = [] as TQuestion[] 
-   const roomRef = ref(db, roomsRef.key + "/" + idRoom )
+   const questions = [] as TQuestion[]          
+   
+   const objRoom = snapshot.val() 
+   const objQuestions = objRoom.Questions
+   
 
-   onValue(roomRef,(snapshot) => {
-      
-      const objRoom = snapshot.val() 
-      const objListQuestionOfRoom = objRoom.Questions
-      //console.log("objListQuestionOfRoom", objListQuestionOfRoom);
+   if(objQuestions){
+      const arrayQuestios = Object.entries(objQuestions ?? {}) 
 
-      if(listQuestionOfRoom.length>0)
-         listQuestionOfRoom.length = 0;
+      arrayQuestios.map(([key, value])=>{       
+               
+         const objQuestion = value as TQuestion; 
+         objQuestion.id = key;                  
+                     
+         const arrayLikes = Object.entries(objQuestion.likes ?? {}) 
+         const likes = [] as TLike[] 
+         arrayLikes.map(([key2, value2])=>{               
+            const objLike = value2 as TLike ;
+            objLike.id = key2;             
+            likes.push(objLike);
 
-      if(objListQuestionOfRoom){
-         const arrayQuestios = Object.entries(objListQuestionOfRoom ?? {}) 
+            if(objLike.authorId == userId)
+            {
+               objQuestion.isLikedByCurrentUser = true
+            }
 
-         //console.log("arrayQuestios",arrayQuestios);
-
-         arrayQuestios.map(([key, value])=>{           
-            const objQuestion = value as TQuestion;
-            objQuestion.id = key;
-            listQuestionOfRoom.push(objQuestion)                  
          })
-      }
-   })
+         objQuestion.likes = likes;            
+         
+         questions.push(objQuestion)
+      })
+   }      
 
-   //console.log("listQuestionOfRoom",listQuestionOfRoom);
+   //console.log("listQuestionOfRoom",questions);
    
-   return listQuestionOfRoom;
+   return questions;
 }
-
 
 
 async function getQuestionsOfRoom(idRoom:string) : Promise<TQuestion[]> {
@@ -90,7 +103,7 @@ async function getQuestionsOfRoom(idRoom:string) : Promise<TQuestion[]> {
    
 
 
-   //console.log(listQuestionOfRoom);
+   console.log(listQuestionOfRoom);
    
    return listQuestionOfRoom;
 }

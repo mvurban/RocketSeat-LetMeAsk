@@ -13,8 +13,11 @@ export type TRoomCode = {
    idRoom : string;
 }
 
+//TODO Substituir os nomes dos objetos do firebase para nome de variávesis 
+
 const db = getDatabase();
 const roomsRef = ref(db, 'Rooms')
+
 
 
 function addRoom(title: string, authorId : string) : string | null {

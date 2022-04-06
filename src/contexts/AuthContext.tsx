@@ -18,7 +18,7 @@ export const authContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider(props : AuthContextProviderProps){ 
 
-   const[user, setUser] = useState<TUser>();
+   const[user, setUser] = useState<TUser>();  
 
    //Mantém a informação na tela
    useEffect(()=>{
