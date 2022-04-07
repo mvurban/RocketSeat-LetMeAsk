@@ -44,7 +44,10 @@ export function Home(){
          //Verifico se existe a sala, 
          const room = await useRoom.getRoom(idRoom);
          if(room){
-            navigate(`/Room/${idRoom}`)
+            if(!room.finishedAt)
+               navigate(`/Room/${idRoom}`)
+            else
+               alert('Esta sala já foi encerrada!!')            
          }
          else{
             alert('Sala não existe')            

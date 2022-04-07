@@ -1,9 +1,9 @@
 
 import { Unsubscribe } from "firebase/auth";
-import { DataSnapshot, get, getDatabase, off, onValue, push, ref } from "firebase/database";
+import { DataSnapshot, get, getDatabase, off, onValue, push, ref, remove } from "firebase/database";
 import { Dispatch } from "react";
 import { TLike } from "./Like";
-import { roomName } from "./ObjectNames";
+import { questionName, roomName } from "./ObjectNames";
 import { TUser } from "./User";
 
 export type TQuestion = {
@@ -159,8 +159,14 @@ async function getQuestionsOfRoom(idRoom:string) : Promise<TQuestion[]> {
 }
 
 
-function delQuestion(){
-
+async function delQuestion(roomId:string, questionId : string){
+   try {
+      const questionRef = ref(db,`${roomName}/${roomId}/${questionName}/${questionId}`)
+      await remove(questionRef)
+   } 
+   catch (error) {
+      throw error;
+   }
 }
 
 function setQuestion(){
@@ -197,7 +203,7 @@ function objRoom(title : string, authorId:string){
    return {title, authorId} as TRoom
 }
 */
-export const useQuestion = {addQuestion, getQuestionsOfRoom, onQuestionsOfRoom} ;
+export const useQuestion = {addQuestion, delQuestion, getQuestionsOfRoom, onQuestionsOfRoom} ;
 
 
 

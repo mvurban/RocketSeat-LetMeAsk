@@ -1,5 +1,6 @@
 
-import { child, get, getDatabase, push, ref, set } from "firebase/database";
+import { child, get, getDatabase, push, ref, set, update } from "firebase/database";
+import { roomName } from "./ObjectNames";
 import { TQuestion } from "./Question";
 
 export type TRoom = {
@@ -7,6 +8,7 @@ export type TRoom = {
    title : string;
    authorId : string;   
    questions? : TQuestion[];
+   finishedAt? : Date;
 }
 
 export type TRoomCode = {
@@ -40,7 +42,15 @@ function delRoom(){
 
 }
 
-function setRoom(){
+function setRoomToFinish(roomId : string){
+   const roomRef = ref(db,`${roomName}/${roomId}`)
+   try {
+      update(roomRef, {
+         finishedAt : new Date()
+      })
+   } catch (error) {
+      throw error
+   }
    // set(reference, {
    //    title : room.title,
    //    authorId : room.authorId
@@ -73,7 +83,7 @@ function objRoom(title : string, authorId:string){
    return {title, authorId} as TRoom
 }
 
-export const useRoom = {addRoom, getRoom, setRoom, delRoom, objRoom} ;
+export const useRoom = {addRoom, getRoom, setRoomToFinish, delRoom, objRoom} ;
 
 
 

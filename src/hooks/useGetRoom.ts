@@ -1,8 +1,9 @@
 import { getDatabase, onValue, ref } from "firebase/database";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { roomName } from "../domain/ObjectNames";
 import { TQuestion, useQuestion } from "../domain/Question";
-import { useRoom } from "../domain/Room";
+import { TRoom, useRoom } from "../domain/Room";
 import { useAuth } from "./useAuth";
 
 const db = getDatabase();
@@ -11,55 +12,92 @@ export function useGetRoom(idRoom : string) {
 
    const[title, setTitle] = useState<string>('')
    const[questions, setQuestions] = useState<TQuestion[]>([])
+   const[room, setRoom] = useState<TRoom>()
    const {user} = useAuth()
+   const navigator = useNavigate()
 
+   
+   //useMemo(()=>getRoom(idRoom),[idRoom]);
+   
+//TODO entender como validar qnd não existe uma sala.
+
+   useMemo(()=>getRoom(idRoom),[idRoom,questions]);   
+   
+   
+   //useMemo(()=>getRoom(idRoom),[idRoom,questions]);
 
    if(idRoom)
    {
       try {
-         setNameToRoom(idRoom);
+   //      setNameToRoom(idRoom);  
       } 
       catch (error) {   
-         alert(error) 
+         //alert(error) 
       }      
    }
 
    useEffect(() => {
-      if(idRoom && user){
+      if(room && user){
 
-         const roomRef = ref(db, `${roomName}/${idRoom}` )
-   
-         const unsub = onValue(roomRef,(snapshot) => {
-            const arrayQuestios = useQuestion.onQuestionsOfRoom(snapshot, user.id)
-            setQuestions(arrayQuestios);         
-         })
+         if(!room.finishedAt){
 
-         return ()=>{
-            unsub();
-         }   
-      }}
-
+            const roomRef = ref(db, `${roomName}/${idRoom}` )
       
-   ,[idRoom, user]);
+            const unsub = onValue(roomRef,(snapshot) => {
+               const arrayQuestios = useQuestion.onQuestionsOfRoom(snapshot, user.id)
+               setQuestions(arrayQuestios);         
+            })
 
-
-   async function setNameToRoom(idRoom : string)  {
-
-      let room = null;
-
-      try {
-         room = await useRoom.getRoom(idRoom)   
-         if (room){
-            setTitle(room.title)      
+            return ()=>{
+               unsub();
+            }   
          }
          else{
-            throw new Error('Sala não encontrada')
+            alert('Sala encerrada')
+            navigator('/')
          }
-      } catch (error) {
-         alert(error)
+      }
+      else{
+         // alert('Sala nnão existe')
+         // navigator('/')
       }
    }
 
-   return{title, questions, setQuestions}
+   ,[idRoom, room, user]);
+
+
+   async function getRoom(idRoom:string) {
+      const room = await useRoom.getRoom(idRoom)
+      if(room)
+         setRoom(room)
+      else
+         throw new Error('Sala não existe')
+   }
+
+   // async function setNameToRoom(idRoom : string)  {
+
+   //    let room = null;
+
+   //    try {
+   //       room = await useRoom.getRoom(idRoom)   
+   //       if (room){
+   //          if(!room.finishedAt)
+   //             setTitle(room.title)      
+   //          else{               
+   //             throw new Error('Esta sala encontra-se encerrada!!')   
+   //          }
+   //       }
+   //       else{
+   //          throw new Error('Sala não encontrada')
+   //       }
+   //    } catch (error) {         
+   //       alert(error)         
+   //       navigator('/')
+   //       return
+   //    }
+      
+   // }
+
+   return{title : (room ? room.title : ""), questions}
 
 }
