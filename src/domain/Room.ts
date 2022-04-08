@@ -15,12 +15,8 @@ export type TRoomCode = {
    idRoom : string;
 }
 
-//TODO Substituir os nomes dos objetos do firebase para nome de variávesis 
-
 const db = getDatabase();
-const roomsRef = ref(db, 'Rooms')
-
-
+const roomsRef = ref(db, roomName)
 
 function addRoom(title: string, authorId : string) : string | null {
 
@@ -51,19 +47,15 @@ function setRoomToFinish(roomId : string){
    } catch (error) {
       throw error
    }
-   // set(reference, {
-   //    title : room.title,
-   //    authorId : room.authorId
-   // })
 }
 
-async function getRoom(idRoom : string) : Promise<TRoom | null>{
+async function getRoom(roomId : string) : Promise<TRoom | null>{
 
    let room = null
 
    try{
-
-      const snapshot = await get(child(roomsRef,`/${idRoom}`))
+      
+      const snapshot = await get(child(roomsRef, `/${roomId}`))
       if(snapshot.exists())
       {
         room = snapshot.val() as TRoom

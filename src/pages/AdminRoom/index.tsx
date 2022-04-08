@@ -8,15 +8,25 @@ import logo from '../assets/images/logo.svg'
 import noquestion from '../assets/images/noquestions.svg'
 import {useGetRoom} from '../../hooks/useGetRoom'
 import { useQuestion } from "../../domain/Question";
+import { useEffect } from "react";
+
 
 export function AdminRoom(){
 
    const {idRoom} = useParams<TRoomCode>();         
 
-   //TODO UseGetRoom pode vir com o Throw error, entender como validar no AdminRoom.
+   //TODO UseGetRoom pode vir com a sala vazia, entender como validar no AdminRoom.
 
    const{ title,  questions } =  useGetRoom(idRoom || "") ;
    const Navigator = useNavigate();
+
+
+   // useEffect(()=>{
+   //    if(title === ""){
+   //       //alert('Sala não existe');
+   //       //Navigator('/')
+   //    }
+   // },[title])
 
    function handleFinisheRoom(){
       if(window.confirm('Deseja realmente fechar esta sala?')){

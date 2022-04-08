@@ -12,18 +12,20 @@ export function useGetRoom(idRoom : string) {
 
    const[title, setTitle] = useState<string>('')
    const[questions, setQuestions] = useState<TQuestion[]>([])
-   const[room, setRoom] = useState<TRoom>()
+   const[room, setRoom] = useState<TRoom | null>()
    const {user} = useAuth()
    const navigator = useNavigate()
 
    
    //useMemo(()=>getRoom(idRoom),[idRoom]);
    
-//TODO entender como validar qnd não existe uma sala.
+//TODO entender como validar qnd não existe uma sala e a chamada é feita diretamente pela url exemplo
+//http://localhost:3000/Admin/Room/-MzKoIG793cUExsDfAJo
 
-   useMemo(()=>getRoom(idRoom),[idRoom,questions]);   
+   //useMemo(()=>getRoom(idRoom),[idRoom,questions]);   
    
-   
+   //getRoom(idRoom)
+
    //useMemo(()=>getRoom(idRoom),[idRoom,questions]);
 
    if(idRoom)
@@ -36,43 +38,41 @@ export function useGetRoom(idRoom : string) {
       }      
    }
 
+   async function getRoom(idRoom : string) {
+      const room = await useRoom.getRoom(idRoom)
+      setRoom(room)
+   }
+
+
    useEffect(() => {
-      if(room && user){
 
-         if(!room.finishedAt){
+      getRoom(idRoom);
 
-            const roomRef = ref(db, `${roomName}/${idRoom}` )
-      
-            const unsub = onValue(roomRef,(snapshot) => {
+      if (room && user) {
+
+         if (!room.finishedAt) {
+
+            const roomRef = ref(db, `${roomName}/${idRoom}`)
+
+            const unsub = onValue(roomRef, (snapshot) => {
                const arrayQuestios = useQuestion.onQuestionsOfRoom(snapshot, user.id)
-               setQuestions(arrayQuestios);         
+               setQuestions(arrayQuestios);
             })
 
-            return ()=>{
+            return () => {
                unsub();
-            }   
+            }
          }
-         else{
+         else {
             alert('Sala encerrada')
             navigator('/')
          }
       }
-      else{
-         // alert('Sala nnão existe')
-         // navigator('/')
-      }
    }
+   , [idRoom, user?.id]);
 
-   ,[idRoom, room, user]);
 
 
-   async function getRoom(idRoom:string) {
-      const room = await useRoom.getRoom(idRoom)
-      if(room)
-         setRoom(room)
-      else
-         throw new Error('Sala não existe')
-   }
 
    // async function setNameToRoom(idRoom : string)  {
 
