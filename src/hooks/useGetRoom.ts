@@ -13,6 +13,7 @@ export function useGetRoom(idRoom : string) {
    const[title, setTitle] = useState<string>('')
    const[questions, setQuestions] = useState<TQuestion[]>([])
    const[room, setRoom] = useState<TRoom | null>()
+   const[loaded, setLoaded] = useState(false);
    const {user} = useAuth()
    const navigator = useNavigate()
 
@@ -21,6 +22,8 @@ export function useGetRoom(idRoom : string) {
    
 //TODO entender como validar qnd não existe uma sala e a chamada é feita diretamente pela url exemplo
 //http://localhost:3000/Admin/Room/-MzKoIG793cUExsDfAJo
+
+//TODO passsar o room no parametro de retorno.
 
    //useMemo(()=>getRoom(idRoom),[idRoom,questions]);   
    
@@ -38,13 +41,16 @@ export function useGetRoom(idRoom : string) {
       }      
    }
 
-   async function getRoom(idRoom : string) {
-      const room = await useRoom.getRoom(idRoom)
-      setRoom(room)
-   }
-
 
    useEffect(() => {
+
+      async function getRoom(idRoom : string) {
+         const room = await useRoom.getRoom(idRoom)
+         console.log(room);         
+         setRoom(room)
+         setLoaded(true)
+
+      }
 
       getRoom(idRoom);
 
@@ -98,6 +104,6 @@ export function useGetRoom(idRoom : string) {
       
    // }
 
-   return{title : (room ? room.title : ""), questions}
+   return{title : (room ? room.title : ""), questions, loaded}
 
 }
