@@ -1,6 +1,5 @@
 import { getDatabase, onValue, ref } from "firebase/database";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { roomName } from "../domain/ObjectNames";
 import { TQuestion, useQuestion } from "../domain/Question";
 import { TRoom, useRoom } from "../domain/Room";
@@ -8,53 +7,29 @@ import { useAuth } from "./useAuth";
 
 const db = getDatabase();
 
-export function useGetRoom(idRoom : string) {
+export function useGetRoom(idRoom: string) {
 
-   const[title, setTitle] = useState<string>('')
-   const[questions, setQuestions] = useState<TQuestion[]>([])
-   const[room, setRoom] = useState<TRoom | null>()
-   const[loaded, setLoaded] = useState(false);
-   const {user} = useAuth()
-   const navigator = useNavigate()
-
-   
-   //useMemo(()=>getRoom(idRoom),[idRoom]);
-   
-//TODO entender como validar qnd não existe uma sala e a chamada é feita diretamente pela url exemplo
-//http://localhost:3000/Admin/Room/-MzKoIG793cUExsDfAJo
-
-//TODO passsar o room no parametro de retorno.
-
-   //useMemo(()=>getRoom(idRoom),[idRoom,questions]);   
-   
-   //getRoom(idRoom)
-
-   //useMemo(()=>getRoom(idRoom),[idRoom,questions]);
-
-   if(idRoom)
-   {
-      try {
-   //      setNameToRoom(idRoom);  
-      } 
-      catch (error) {   
-         //alert(error) 
-      }      
-   }
+   const [questions, setQuestions] = useState<TQuestion[]>([])
+   const [room, setRoom] = useState<TRoom | null>()
+   const [loaded, setLoaded] = useState(false);
+   const [fineshed, setFineshed] = useState(false);
+   const { user } = useAuth()
 
 
    useEffect(() => {
 
-      async function getRoom(idRoom : string) {
-         const room = await useRoom.getRoom(idRoom)
-         console.log(room);         
-         setRoom(room)
-         setLoaded(true)
-
+      async function getRoom(idRoom: string) {
+         if (idRoom) {
+            const room = await useRoom.getRoom(idRoom)
+            setLoaded(true)
+            setRoom(room)            
+            setFineshed(room?.finishedAt ? true : false)
+         }
       }
 
       getRoom(idRoom);
 
-      if (room && user) {
+      if (idRoom && room && user) {
 
          if (!room.finishedAt) {
 
@@ -63,47 +38,17 @@ export function useGetRoom(idRoom : string) {
             const unsub = onValue(roomRef, (snapshot) => {
                const arrayQuestios = useQuestion.onQuestionsOfRoom(snapshot, user.id)
                setQuestions(arrayQuestios);
+
             })
 
             return () => {
                unsub();
             }
          }
-         else {
-            alert('Sala encerrada')
-            navigator('/')
-         }
       }
    }
-   , [idRoom, user?.id]);
+      , [idRoom, room, user?.id]);
 
-
-
-
-   // async function setNameToRoom(idRoom : string)  {
-
-   //    let room = null;
-
-   //    try {
-   //       room = await useRoom.getRoom(idRoom)   
-   //       if (room){
-   //          if(!room.finishedAt)
-   //             setTitle(room.title)      
-   //          else{               
-   //             throw new Error('Esta sala encontra-se encerrada!!')   
-   //          }
-   //       }
-   //       else{
-   //          throw new Error('Sala não encontrada')
-   //       }
-   //    } catch (error) {         
-   //       alert(error)         
-   //       navigator('/')
-   //       return
-   //    }
-      
-   // }
-
-   return{title : (room ? room.title : ""), questions, loaded}
+   return { title: (room ? room.title : undefined), questions, loaded, fineshed }
 
 }
