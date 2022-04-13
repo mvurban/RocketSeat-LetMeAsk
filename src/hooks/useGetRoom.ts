@@ -47,7 +47,7 @@ export function useGetRoom(idRoom: string) {
          }
       }
    }
-      , [idRoom, room, user?.id]);
+      , [idRoom, user?.id]);
 
    return { title: (room ? room.title : undefined), questions, loaded, fineshed }
 

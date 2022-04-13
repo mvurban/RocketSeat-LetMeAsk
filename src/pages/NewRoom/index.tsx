@@ -25,7 +25,7 @@ export function NewRoom() {
             if (user) {               
                const idRoom = useRoom.addRoom(roomName, user?.id);
 
-               Navigate("/Room/" + idRoom)
+               Navigate("/Room/" + idRoom )
             }
             else
                alert("Você precisa estar logado pra criar uma sala");
