@@ -1,0 +1,29 @@
+/*{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+*/
+
+//Explicação em https://youtu.be/vjsOUfTZqCs?t=1980
+{
+  "rules": {
+		"Rooms" : {
+      ".read" : false,
+      ".write" : "auth != null",
+      "$roomId" : {
+        ".read" : true,
+        ".write" : "auth != null && (!data.exists() || data.child('authorId').val() == auth.id)",
+      	"Questions" : {
+          ".read" : true,
+          ".write" : "auth != null && (!data.exists() || data.parent().child('authorId').val() == auth.id)",
+          "likes" : {
+            ".read" : true,
+            //".write" : "auth != null && (!data.exists() || data.child('authorId').val() == auth.id)"
+          }            
+        }
+      }
+    }
+  }
+}
