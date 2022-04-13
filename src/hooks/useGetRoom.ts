@@ -2,7 +2,7 @@ import { getDatabase, onValue, ref } from "firebase/database";
 import { useEffect, useState } from "react";
 import { roomName } from "../domain/ObjectNames";
 import { TQuestion, useQuestion } from "../domain/Question";
-import { TRoom, useRoom } from "../domain/Room";
+import { useRoom } from "../domain/Room";
 import { useAuth } from "./useAuth";
 
 const db = getDatabase();
@@ -10,7 +10,7 @@ const db = getDatabase();
 export function useGetRoom(idRoom: string) {
 
    const [questions, setQuestions] = useState<TQuestion[]>([])
-   const [room, setRoom] = useState<TRoom | null>()
+   const [title, setTitle] = useState<string | undefined>();
    const [loaded, setLoaded] = useState(false);
    const [fineshed, setFineshed] = useState(false);
    const { user } = useAuth()
@@ -22,33 +22,30 @@ export function useGetRoom(idRoom: string) {
          if (idRoom) {
             const room = await useRoom.getRoom(idRoom)
             setLoaded(true)
-            setRoom(room)            
+            setTitle(room?.title)            
             setFineshed(room?.finishedAt ? true : false)
          }
       }
 
       getRoom(idRoom);
 
-      if (idRoom && room && user) {
+      if (idRoom && user) {
 
-         if (!room.finishedAt) {
+         const roomRef = ref(db, `${roomName}/${idRoom}`)
 
-            const roomRef = ref(db, `${roomName}/${idRoom}`)
+         const unsub = onValue(roomRef, (snapshot) => {
+            const arrayQuestios = useQuestion.onQuestionsOfRoom(snapshot, user.id)
+            setQuestions(arrayQuestios);
 
-            const unsub = onValue(roomRef, (snapshot) => {
-               const arrayQuestios = useQuestion.onQuestionsOfRoom(snapshot, user.id)
-               setQuestions(arrayQuestios);
+         })
 
-            })
-
-            return () => {
-               unsub();
-            }
+         return () => {
+            unsub();
          }
       }
    }
-      , [idRoom, user?.id]);
+   , [idRoom, user]);
 
-   return { title: (room ? room.title : undefined), questions, loaded, fineshed }
+   return { title, questions, loaded, fineshed }
 
 }
