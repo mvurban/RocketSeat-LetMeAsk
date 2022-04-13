@@ -1,6 +1,6 @@
 
 import { Unsubscribe } from "firebase/auth";
-import { DataSnapshot, get, getDatabase, off, onValue, push, ref, remove } from "firebase/database";
+import { DataSnapshot, get, getDatabase, off, onValue, push, ref, remove, update } from "firebase/database";
 import { Dispatch } from "react";
 import { TLike } from "./Like";
 import { questionName, roomName } from "./ObjectNames";
@@ -163,14 +163,28 @@ async function delQuestion(roomId:string, questionId : string){
    }
 }
 
-function setQuestion(){
-   // set(reference, {
-   //    title : room.title,
-   //    authorId : room.authorId
-   // })
+async function hightlightQuestion(roomId:string, questionId : string, hightLighted:boolean){
+   try {      
+      const questionRef = ref(db,`${roomName}/${roomId}/${questionName}/${questionId}`)
+      await update(questionRef,{isHightLighted : hightLighted})
+   } 
+   catch (error) {
+      throw error;
+   }
 }
 
-export const useQuestion = {addQuestion, delQuestion, getQuestionsOfRoom, onQuestionsOfRoom} ;
+async function answereQuestion(roomId:string, questionId : string, answered:boolean){
+   try {      
+      const questionRef = ref(db,`${roomName}/${roomId}/${questionName}/${questionId}`)
+      await update(questionRef,{isAnswered : answered })
+   } 
+   catch (error) {
+      throw error;
+   }
+}
+
+
+export const useQuestion = {addQuestion, delQuestion, getQuestionsOfRoom, onQuestionsOfRoom, hightlightQuestion, answereQuestion} ;
 
 
 

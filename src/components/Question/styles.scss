@@ -37,20 +37,28 @@
       }
       .question-cmds{
 
-         .like-button{         
+         display: flex;
+         align-items: center;
+         gap:16px;
+
+         button{
             border: 0;
             background-color: transparent;
+            cursor: pointer;
+         }
+
+
+         .like-button{                     
+            transition: filter 0.2s;
             display: flex;
             align-items: center;
-            cursor: pointer;
-            transition: filter 0.2s;
-   
+      
             &:hover{
                filter: brightness(0.8);
             }
 
             >span{
-               padding: 10px 5px 0;
+               padding: 10px 8px 0;
             }
             
             .liked{
@@ -63,10 +71,60 @@
             
          }
 
+         .answeredQuestion{
+            svg{
+               &:hover{
+                  path, circle {               
+                     stroke: #6F4BD8;
+                  }
+               }
+            }
+            .answered{
+               path, circle {               
+                  stroke: #6F4BD8;
+               }
+            }
+         }
+
+         .hightLightQuestion{
+            svg{
+               &:hover{
+                  path{               
+                     stroke: #6F4BD8;
+                  }
+               }
+            }
+            .hightLighted{
+               path{
+                  stroke:#6F4BD8 ;
+               }
+            }
+         }
+
+         .deleteQuestion{
+
+            svg{
+               &:hover{
+                  path{               
+                     stroke: #E73F5D;
+                  }
+               }
+            }
+         }
+
       }
    
       
    }
+}
 
+.hightLight{
+   border: 1px solid #835AFD;
+   background-color: #F4F0FF;
+   
+}
 
+.answered{
+   border: 0;
+   background-color: #DBDCDD;
 }

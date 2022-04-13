@@ -50,22 +50,6 @@
 
    .question-section{
       margin-top: 32px;
-           
-
-      .deleteQuestion{
-
-         background-color: transparent;
-         border:0;
-         cursor: pointer;
-
-         svg{
-            &:hover{
-               path{               
-                  stroke: #E73F5D;
-               }
-            }
-         }
-      }
 
       .noquestions{
          margin-top: 64px;

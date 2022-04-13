@@ -18,7 +18,7 @@ export function Question(props : TObjQuestion){
    //console.log("question",question);   
 
    return(
-      <div className="question-container">
+      <div className={`${question?.isHightLighted ? 'hightLight ' : ''} ${question?.isAnswered ? 'answered ' : ''} question-container`}>
          <p>{question.content}</p>
 
          <footer>
