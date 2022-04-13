@@ -14,8 +14,6 @@ export function AdminRoom() {
 
    const { idRoom } = useParams<TRoomCode>();
 
-   //TODO UseGetRoom pode vir com a sala vazia, entender como validar no AdminRoom.
-
    const { title, questions, loaded, fineshed } = useGetRoom(idRoom || "");
    const Navigator = useNavigate();
 

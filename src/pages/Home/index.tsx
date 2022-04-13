@@ -42,7 +42,7 @@ export function Home(){
       event.preventDefault();
       if(idRoom.trim() !== ""){
          //Verifico se existe a sala, 
-         const room = await useRoom.getRoom(idRoom);
+         const room = await useRoom.getRoom(idRoom.trim());
          if(room){
             if(!room.finishedAt)
                navigate(`/Room/${idRoom}`)
