@@ -17,6 +17,6 @@ Projeto de estudos que gerencia o post de perguntas e seus likes fornecendo ao a
    1. Hooks
    2. Contexts
 1. Firebase
-   1.RealTime Database
+   1. RealTime Database
 
 
